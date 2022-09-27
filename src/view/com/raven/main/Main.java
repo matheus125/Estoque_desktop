@@ -27,11 +27,11 @@ import java.sql.Timestamp;
 public class Main extends javax.swing.JFrame {
 
     private Form_Home home;
-    private Form_Product formAluno;
+    private Form_Product formProduct;
     private Form_Funcionario formFuncionario;
-    
+
     int codUser;
-    
+
     ConexaoBD con = new ConexaoBD();
 
     public Main(String usuário) {
@@ -39,7 +39,7 @@ public class Main extends javax.swing.JFrame {
         con.getConectar();
         setBackground(new Color(0, 0, 0, 0));
         home = new Form_Home();
-        formAluno = new Form_Product();
+        formProduct = new Form_Product();
         formFuncionario = new Form_Funcionario();
         menu.initMoving(Main.this);
 
@@ -51,7 +51,7 @@ public class Main extends javax.swing.JFrame {
                         setForm(home);
                         break;
                     case 1:
-                        setForm(formAluno);
+                        CheckLogin();
                         break;
                     case 2:
                         setForm(formFuncionario);
@@ -65,28 +65,52 @@ public class Main extends javax.swing.JFrame {
         //  set when system open start with home form
         setForm(new Form_Home());
     }
-    
+
     private Main() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    private void salvarUserLogsExit(){
-        
+
+    private void CheckLogin() {
+        try {
+            Form_Product formProduct = new Form_Product();
+            con.executarSql("select*from tb_user where login='" + lbusuarios.getText() + "'");
+            con.getResultSet().first();
+            if (con.getResultSet().getString("profile").equals("Administrador")) {
+                if (formProduct == formProduct) {
+                    setForm(formProduct);
+                    formProduct.setVisible(true);
+
+                } else {
+                    formProduct.setVisible(true);
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Você não tem Acesso a essa Funcionalidade!\n Contate o Administrador do Sistema!");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Você não tem Acesso a essa Funcionalidade!\n Contate o Administrador do Sistema!" + ex.getMessage());
+        }
+    }
+
+    private void salvarUserLogsExit() {
+
         con.getConectar();
         try {
             con.executarSql("select*from tb_userslogs where login='" + lbusuarios.getText() + "'");
             con.getResultSet().last();
             codUser = con.getResultSet().getInt("id");
-           
+
             PreparedStatement pst = con.con.prepareStatement("UPDATE tb_userslogs SET exit_registration_date_update = CURRENT_TIMESTAMP WHERE id=?");
-         
+
             pst.setInt(1, codUser);
             pst.execute();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro no update" +e);
-            
+            JOptionPane.showMessageDialog(null, "Erro no update" + e);
+
         }
-    
-    };
+
+    }
 
     private void setForm(JComponent com) {
         mainPanel.removeAll();
@@ -124,6 +148,12 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Usuário:");
+
+        menu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuMouseClicked(evt);
+            }
+        });
 
         btn_sair.setText("sair");
         btn_sair.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +221,10 @@ public class Main extends javax.swing.JFrame {
         System.exit(0);
         con.getfecharConexao();
     }//GEN-LAST:event_btn_sairActionPerformed
+
+    private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuMouseClicked
 
     /**
      * @param args the command line arguments
