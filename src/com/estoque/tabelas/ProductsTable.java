@@ -11,11 +11,11 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Dell
  */
-public final class TabelaAlunos extends AbstractTableModel{
+public final class ProductsTable extends AbstractTableModel{
     private ArrayList linhas = null;
    private String[] colunas = null;
     
-   public TabelaAlunos(ArrayList lin, String [] col){
+   public ProductsTable(ArrayList lin, String [] col){
        setLinhas(lin);
        setColunas(col);
    }
