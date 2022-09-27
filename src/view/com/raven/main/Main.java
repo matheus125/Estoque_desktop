@@ -188,6 +188,8 @@ public class Main extends javax.swing.JFrame {
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
         salvarUserLogsExit();
+        System.exit(0);
+        con.getfecharConexao();
     }//GEN-LAST:event_btn_sairActionPerformed
 
     /**

@@ -292,7 +292,7 @@ public class TelaLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-       con.fecharConexao();
+       con.getfecharConexao();
        System.exit(0);  
     }//GEN-LAST:event_btnSairActionPerformed
 

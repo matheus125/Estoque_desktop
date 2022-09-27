@@ -1,7 +1,7 @@
 package com.estoque.model;
 
 public class Product {
-    
+
     private int id;
     private Category category;
     private String type;
@@ -9,13 +9,14 @@ public class Product {
     private String color;
     private String size;
     private String description;
+    private int code;
     private String bar_code;
     private Float price;
 
     public Product() {
     }
 
-    public Product(int id, Category category, String type, String brand, String color, String size, String description, String bar_code, Float price) {
+    public Product(int id, Category category, String type, String brand, String color, String size, String description, int code, String bar_code, Float price) {
         this.id = id;
         this.category = category;
         this.type = type;
@@ -23,11 +24,27 @@ public class Product {
         this.color = color;
         this.size = size;
         this.description = description;
+        this.code = code;
         this.bar_code = bar_code;
         this.price = price;
     }
+
     
-    
+
+    /**
+     * @return the code
+     */
+    public int getCode() {
+        return code;
+    }
+
+    /**
+     * @param code the code to set
+     */
+    public void setCode(int code) {
+        this.code = code;
+    }
+
     /**
      * @return the id
      */

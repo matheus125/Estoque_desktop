@@ -138,7 +138,7 @@ public class ConexaoBD {
      * Metodo para encerrar conexão com o banco de dados
      * @return 
      */
-    public boolean fecharConexao() {
+    public boolean getfecharConexao() {
         try {
             if ((this.getResultSet() != null) && (this.statement != null)) {
                 this.getResultSet().close();

@@ -15,6 +15,7 @@ public class ProductDao extends ConexaoBD {
                 + "'" + product.getColor() + "',"
                 + "'" + product.getSize() + "',"
                 + "'" + product.getDescription() + "',"
+                + "'" + product.getCode()+ "',"
                 + "'" + product.getBar_code() + "',"
                 + "'" + product.getPrice() + "'"
                 + ")";
@@ -26,8 +27,9 @@ public class ProductDao extends ConexaoBD {
             erro.printStackTrace();
             return false;
         } finally {
-            this.fecharConexao();
+            this.getfecharConexao();
         }
-
     }
+    
+    
 }
