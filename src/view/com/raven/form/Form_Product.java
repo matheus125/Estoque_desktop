@@ -38,6 +38,7 @@ public class Form_Product extends javax.swing.JPanel {
         price.setText("");
         bar_code.setText("");
         description.setText("");
+        search_product.setText("");
     }
 
     public final void desabilitarCampos() {
@@ -78,28 +79,29 @@ public class Form_Product extends javax.swing.JPanel {
         btnSalvar.setEnabled(true);
     }
 
-    public void gravarAluno() {
+    public void saveProduct() {
         category.setCategory_name(this.category_name.getText());
-        
+
         product.setType(this.type.getText());
         product.setBrand(this.brand.getText());
-        
+
         product.setType(this.type.getText());
         product.setBrand(this.brand.getText());
         product.setSize(this.size.getText());
         product.setDescription(this.description.getText());
         product.setBar_code(this.bar_code.getText());
         product.setPrice(Float.parseFloat(this.price.getText()));
-        
+
         inventory.setQtdproduct(Integer.parseInt(this.qtdproduct.getText()));
         boolean resultado = controllerProduct.controlSaveProduct(category, product, inventory);
         if (resultado == true) {
             JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
+            loadStudentsTable("call sp_list_products()");
             limparCampos();
             desabilitarCampos();
             desabilitarBotao();
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -129,6 +131,8 @@ public class Form_Product extends javax.swing.JPanel {
         tamanho = new javax.swing.JLabel();
         qtdproduct = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        search_product = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(242, 238, 238));
 
@@ -194,22 +198,23 @@ public class Form_Product extends javax.swing.JPanel {
 
         jLabel4.setText("Quantidade:");
 
+        search_product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_productActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Limpar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(308, 308, 308)
-                .addComponent(btnNovo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSalvar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAlterar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRemover)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCancelar)
-                .addGap(304, 393, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -247,9 +252,25 @@ public class Form_Product extends javax.swing.JPanel {
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
                                 .addComponent(qtdproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 875, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(search_product, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 19, Short.MAX_VALUE)))
                 .addGap(93, 93, 93))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(308, 308, 308)
+                .addComponent(btnNovo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAlterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRemover)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,15 +290,14 @@ public class Form_Product extends javax.swing.JPanel {
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(qtdproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(tamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(size, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(qtdproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -286,9 +306,13 @@ public class Form_Product extends javax.swing.JPanel {
                     .addComponent(btnAlterar)
                     .addComponent(btnRemover)
                     .addComponent(btnCancelar))
-                .addGap(34, 34, 34)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(search_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -308,7 +332,7 @@ public class Form_Product extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        gravarAluno();
+        saveProduct();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void tableProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductMouseClicked
@@ -332,10 +356,39 @@ public class Form_Product extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
         }
     }//GEN-LAST:event_tableProductMouseClicked
-    
+
+    private void search_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_productActionPerformed
+
+        try {
+
+            String search_product = ("select c.category_name, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.qtdproduct from "
+                    + "tb_category c inner join tb_product p on c.id = p.id_category "
+                    + "inner join tb_inventory i on p.id = i.id_product where bar_code like '" + this.search_product.getText() + "%'");
+            con.executarSql(search_product);
+            
+            if (con.getResultSet().first()) {
+                bar_code.setText(con.getResultSet().getString("bar_code"));
+                description.setText(con.getResultSet().getString("description"));
+                category_name.setText(con.getResultSet().getString("category_name"));
+                brand.setText(con.getResultSet().getString("brand"));
+                type.setText(con.getResultSet().getString("type"));
+                size.setText(con.getResultSet().getString("size"));
+                price.setText(con.getResultSet().getString("price"));
+                qtdproduct.setText(con.getResultSet().getString("qtdproduct"));
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
+        }
+    }//GEN-LAST:event_search_productActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void loadStudentsTable(String Sql) {
         ArrayList dados = new ArrayList();
-        String[] colunas = new String[]{"Categoria","Tipo","Marca","Tamanho","Descrição","Preço","Quantidade"};
+        String[] colunas = new String[]{"Categoria", "Tipo", "Marca", "Tamanho", "Descrição", "Preço", "Quantidade"};
         con.getConectar();
         con.executarSql(Sql);
 
@@ -349,9 +402,8 @@ public class Form_Product extends javax.swing.JPanel {
                     con.getResultSet().getString("size"),
                     con.getResultSet().getString("description"),
                     con.getResultSet().getFloat("price"),
-                    con.getResultSet().getInt("qtdproduct"),
-                    });
-            } while(con.getResultSet().next());
+                    con.getResultSet().getInt("qtdproduct"),});
+            } while (con.getResultSet().next());
         } catch (SQLException e) {
 //            JOptionPane.showMessageDialog(null, "Busque Novamente");
         }
@@ -389,6 +441,7 @@ public class Form_Product extends javax.swing.JPanel {
     private javax.swing.JTextField category_name;
     private javax.swing.JLabel descricao;
     private javax.swing.JTextField description;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -398,6 +451,7 @@ public class Form_Product extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField price;
     private javax.swing.JTextField qtdproduct;
+    private javax.swing.JTextField search_product;
     private javax.swing.JTextField size;
     private javax.swing.JTable tableProduct;
     private javax.swing.JLabel tamanho;

@@ -56,6 +56,9 @@ public class Main extends javax.swing.JFrame {
                     case 2:
                         setForm(formFuncionario);
                         break;
+                    case 6:
+                        setForm(home);
+                        break;
                     default:
                         break;
                 }
@@ -79,12 +82,9 @@ public class Main extends javax.swing.JFrame {
                 if (formProduct == formProduct) {
                     setForm(formProduct);
                     formProduct.setVisible(true);
-
                 } else {
                     formProduct.setVisible(true);
-
                 }
-
             } else {
                 JOptionPane.showMessageDialog(null, "Você não tem Acesso a essa Funcionalidade!\n Contate o Administrador do Sistema!");
             }
