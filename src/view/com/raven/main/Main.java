@@ -9,7 +9,7 @@ package view.com.raven.main;
 import com.estoque.banco.ConexaoBD;
 import view.com.raven.form.Form_Home;
 import view.com.raven.form.Form_Product;
-import view.com.raven.form.Form_Funcionario;
+import view.com.raven.form.Form_Vendas;
 import java.awt.Color;
 import static java.awt.SystemColor.menu;
 import java.sql.PreparedStatement;
@@ -28,7 +28,7 @@ public class Main extends javax.swing.JFrame {
 
     private Form_Home home;
     private Form_Product formProduct;
-    private Form_Funcionario formFuncionario;
+    private Form_Vendas formFuncionario;
 
     int codUser;
 
@@ -40,7 +40,7 @@ public class Main extends javax.swing.JFrame {
         setBackground(new Color(0, 0, 0, 0));
         home = new Form_Home();
         formProduct = new Form_Product();
-        formFuncionario = new Form_Funcionario();
+        formFuncionario = new Form_Vendas();
         menu.initMoving(Main.this);
 
         menu.addEventMenuSelected(new EventMenuSelected() {
