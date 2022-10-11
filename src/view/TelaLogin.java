@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import com.estoque.dao.CriptografarSenha;
 
 /**
  *
@@ -25,10 +25,10 @@ public class TelaLogin extends javax.swing.JFrame {
     private final Point point = new Point();
     private final char senha;
     ConexaoBD con = new ConexaoBD();
-    
+
     //Variaveis globais
     int codUser;
-    
+
     /**
      * Creates new form TelaLogin
      */
@@ -37,47 +37,48 @@ public class TelaLogin extends javax.swing.JFrame {
         initComponents();
         con.getConectar();
         senha = txtsenha.getEchoChar();
-        
-       
+
     }
-    
+
     private void salvarUserLogs() {
         con.getConectar();
         try {
             con.executarSql("select*from tb_user where login='" + txtLogin.getText() + "'");
             con.getResultSet().first();
             codUser = con.getResultSet().getInt("id");
-            
+
             PreparedStatement pst = con.con.prepareStatement("insert into tb_userslogs (id_user, login) values(?,?)");
             pst.setInt(1, codUser);
             pst.setString(2, txtLogin.getText());
             pst.execute();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro em salvar" +e);
-            
+            JOptionPane.showMessageDialog(null, "Erro em salvar" + e);
+
         }
     }
-    
-    private void erroSenha(){
+
+    private void erroSenha() {
         Point p = this.getLocation();
         TelaLogin login = this;
         new Thread() {
-           @Override
-           public void run () {
-               try {
-                   for (int i =0; i < 3; i++){
-                       login.setLocation(p.x - 10, p.y);
-                       sleep(20);
-                       login.setLocation(p.x - 10, p.y);
-                       sleep(20);
-                   }
-                   login.setLocation(p.x, p.y);
-               } catch (InterruptedException ex) {
-                   Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
-               }
-           }
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i < 3; i++) {
+                        login.setLocation(p.x - 10, p.y);
+                        sleep(20);
+                        login.setLocation(p.x - 10, p.y);
+                        sleep(20);
+                    }
+                    login.setLocation(p.x, p.y);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }.start();
-    };
+    }
+
+    ;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -292,8 +293,8 @@ public class TelaLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-       con.getfecharConexao();
-       System.exit(0);  
+        con.getfecharConexao();
+        System.exit(0);
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void btnAcessarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAcessarMouseEntered
@@ -336,10 +337,9 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void btnAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcessarActionPerformed
 
-         try {
+        try {
             con.executarSql("select*from tb_user where login='" + txtLogin.getText() + "'");
             con.getResultSet().first();
-                  
             if (txtLogin.getText().isEmpty()) {
                 erroSenha();
                 JOptionPane.showMessageDialog(null, "Preencha o Campo de Login:!");
@@ -348,12 +348,11 @@ public class TelaLogin extends javax.swing.JFrame {
                 erroSenha();
                 JOptionPane.showMessageDialog(null, "Preencha o Campo Senha:!");
                 txtsenha.requestFocus();
-            } else if (con.getResultSet().getString("password").equals((txtsenha.getText()))) {
+            } else if (con.getResultSet().getString("password").equals(CriptografarSenha.encriptografar(txtsenha.getText()))) {
                 salvarUserLogs();
                 Main telamenu = new Main(txtLogin.getText());
                 telamenu.setVisible(true);
                 dispose();
-                
             } else {
                 erroSenha();
                 JOptionPane.showMessageDialog(rootPane, "Usuário ou senha Invalidos!");
@@ -361,9 +360,9 @@ public class TelaLogin extends javax.swing.JFrame {
         } catch (SQLException ex) {
             erroSenha();
             JOptionPane.showMessageDialog(null, "Usuario não encontrado nos registros!");
-            
+
         }
-         
+
     }//GEN-LAST:event_btnAcessarActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed

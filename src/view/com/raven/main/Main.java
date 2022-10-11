@@ -19,6 +19,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import view.com.raven.event.EventMenuSelected;
 import java.sql.Timestamp;
+import view.com.raven.form.Form_Funcionarios;
 
 /**
  *
@@ -28,7 +29,8 @@ public class Main extends javax.swing.JFrame {
 
     private Form_Home home;
     private Form_Product formProduct;
-    private Form_Vendas formFuncionario;
+    private Form_Funcionarios formFuncionarios;
+    private Form_Vendas formVendas;
 
     int codUser;
 
@@ -40,7 +42,8 @@ public class Main extends javax.swing.JFrame {
         setBackground(new Color(0, 0, 0, 0));
         home = new Form_Home();
         formProduct = new Form_Product();
-        formFuncionario = new Form_Vendas();
+        formFuncionarios = new Form_Funcionarios();
+        formVendas = new Form_Vendas();
         menu.initMoving(Main.this);
 
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -54,10 +57,10 @@ public class Main extends javax.swing.JFrame {
                         CheckLogin();
                         break;
                     case 2:
-                        setForm(formFuncionario);
+                        setForm(formFuncionarios);
                         break;
                     case 6:
-                        setForm(home);
+                        setForm(formVendas);
                         break;
                     default:
                         break;

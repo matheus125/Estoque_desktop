@@ -6,6 +6,8 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
+import com.estoque.model.Employees;
+import com.estoque.model.User;
 
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -13,47 +15,34 @@ import java.util.ArrayList;
 
 public class FuncionarioDao extends ConexaoBD {
 
-    /*public boolean daoSalvarFuncionario(ModelContato modelContato, ModelPessoa modelPessoa,
-            ModelUsers modelUsers, ModelDocumentos modelDocumentos,
-            ModelEndereco modelEndereco, ModelFuncionarios modelFuncionarios) {
+    public boolean daoSalvarFuncionario(Employees employees, User user) {
 
-            String salvarFuncionarios = "call sp_funcionario_save ("
-                + "'" + modelContato.getFone() + "',"
-                + "'" + modelContato.getEmail() + "',"
-                + "'" + modelPessoa.getNome() + "',"
-                + "'" + modelPessoa.getEstado_civil() + "',"
-                + "'" + modelPessoa.getDt_nascimento() + "',"
-                + "'" + modelPessoa.getSexo() + "',"
-                + "'" + modelUsers.getPerfil() + "',"
-                + "'" + modelUsers.getLogin() + "',"
-                + "'" + modelUsers.getPassword() + "',"
-                + "'" + modelDocumentos.getRg() + "',"
-                + "'" + modelDocumentos.getCpf() + "',"
-                + "'" + modelEndereco.getCep() + "',"
-                + "'" + modelEndereco.getLogradouro() + "',"
-                + "'" + modelEndereco.getBairro() + "',"
-                + "'" + modelEndereco.getNumecoCasa() + "',"
-                + "'" + modelEndereco.getComplemento() + "',"
-                + "'" + modelFuncionarios.getCargo() + "'"
+        String SalveEmployees = "call sp_save_employees ("
+                + "'" + employees.getEmployees_name()+ "',"
+                + "'" + employees.getEmployees_function()+ "',"
+                + "'" + user.getLogin()+ "',"
+                + "'" + user.getPassword()+ "',"
+                + "'" + user.getProfile()+ "'"
                 + ")";
         try {
             this.getConectar();
-            this.executarSql(salvarFuncionarios);
+            this.executarSql(SalveEmployees);
             return true;
         } catch (Exception erro) {
             erro.printStackTrace();
             return false;
         } finally {
-            this.fecharConexao();
+             this.getfecharConexao();
         }
-    */
-   // }
-    
+
+    }
+
     /**
      * metodo listar funcionarios
-     * @return 
+     *
+     * @return
      */
-   /* public ArrayList<ModelFuncionarios> daoGetListarClientes(){
+    /* public ArrayList<ModelFuncionarios> daoGetListarClientes(){
         ArrayList<ModelFuncionarios> listaFuncionario = new ArrayList<>();
         String comandoSql = "call sp_list_funcionarios()";
         try {

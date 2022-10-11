@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import view.com.raven.swing.Table;
 
 public class Form_Vendas extends javax.swing.JPanel {
@@ -50,7 +51,11 @@ public class Form_Vendas extends javax.swing.JPanel {
         btnRemover.setEnabled(true);
         btnSalvar.setEnabled(true);*/
     }
-
+    
+    private void listarProdutos(){
+        
+    
+    }
     
     /**
      * carregar tabela clientes
@@ -108,21 +113,132 @@ public class Form_Vendas extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(242, 238, 238));
+        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtcodigoproduto = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        txtquantidade = new javax.swing.JTextField();
+        btnAdicionar = new javax.swing.JButton();
+        txtvalortotal = new javax.swing.JTextField();
+        btnNovo = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        txtdesconto = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 987, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
-        );
+        setBackground(new java.awt.Color(242, 238, 238));
+        setLayout(null);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("CAIXA LIVRE");
+        add(jLabel2);
+        jLabel2.setBounds(0, 0, 880, 92);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setText("Valor Total:");
+        add(jLabel7);
+        jLabel7.setBounds(670, 400, 100, 17);
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setText("Cod.Produto:");
+        add(jLabel8);
+        jLabel8.setBounds(40, 100, 100, 20);
+        add(txtcodigoproduto);
+        txtcodigoproduto.setBounds(40, 130, 180, 30);
+
+        add(jComboBox1);
+        jComboBox1.setBounds(230, 130, 300, 30);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setText("Quantidade:");
+        add(jLabel9);
+        jLabel9.setBounds(540, 100, 100, 20);
+        add(txtquantidade);
+        txtquantidade.setBounds(540, 130, 180, 30);
+
+        btnAdicionar.setText("Adicionar");
+        add(btnAdicionar);
+        btnAdicionar.setBounds(730, 130, 90, 30);
+        add(txtvalortotal);
+        txtvalortotal.setBounds(670, 430, 150, 30);
+
+        btnNovo.setText("Novo");
+        add(btnNovo);
+        btnNovo.setBounds(140, 470, 70, 23);
+
+        btnCancelar.setText("Cancelar");
+        add(btnCancelar);
+        btnCancelar.setBounds(50, 470, 80, 23);
+
+        btnSalvar.setText("Salvar");
+        add(btnSalvar);
+        btnSalvar.setBounds(220, 470, 73, 23);
+        add(txtdesconto);
+        txtdesconto.setBounds(500, 430, 150, 30);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setText("Desconto:");
+        add(jLabel10);
+        jLabel10.setBounds(500, 400, 100, 17);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cód.Prod.", "Nome Produto", "Quantidade", "Valor Un.", "Valor Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(90);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(90);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(70);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(70);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(70);
+            jTable1.getColumnModel().getColumn(3).setMinWidth(90);
+            jTable1.getColumnModel().getColumn(3).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(3).setMaxWidth(90);
+            jTable1.getColumnModel().getColumn(4).setMinWidth(90);
+            jTable1.getColumnModel().getColumn(4).setPreferredWidth(90);
+            jTable1.getColumnModel().getColumn(4).setMaxWidth(90);
+        }
+
+        add(jScrollPane2);
+        jScrollPane2.setBounds(40, 190, 780, 190);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtcodigoproduto;
+    private javax.swing.JTextField txtdesconto;
+    private javax.swing.JTextField txtquantidade;
+    private javax.swing.JTextField txtvalortotal;
     // End of variables declaration//GEN-END:variables
 }

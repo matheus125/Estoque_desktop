@@ -9,7 +9,7 @@ public class ProductDao extends ConexaoBD {
 
     public boolean daoSalveProduct(Category category, Product product, Inventory inventory) {
 
-        String SalveProduct = "call sp_save_product ("
+        String SaveProduct = "call sp_save_product ("
                 + "'" + category.getCategory_name()+ "',"
                 + "'" + product.getType() + "',"
                 + "'" + product.getBrand()+ "',"
@@ -21,7 +21,7 @@ public class ProductDao extends ConexaoBD {
                 + ")";
         try {
             this.getConectar();
-            this.executarSql(SalveProduct);
+            this.executarSql(SaveProduct);
             return true;
         } catch (Exception erro) {
             erro.printStackTrace();
