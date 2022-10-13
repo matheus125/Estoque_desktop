@@ -11,11 +11,11 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author Dell
  */
-public final class TabelaFuncionarios extends AbstractTableModel{
+public final class EmployeesTable extends AbstractTableModel{
     private ArrayList linhas = null;
    private String[] colunas = null;
     
-   public TabelaFuncionarios(ArrayList lin, String [] col){
+   public EmployeesTable(ArrayList lin, String [] col){
        setLinhas(lin);
        setColunas(col);
    }

@@ -26,7 +26,8 @@ public class ConexaoBD {
 
     /**
      * metodo para conectar com o banco de dados
-     * @return 
+     *
+     * @return
      */
     public boolean getConectar() {
         try {
@@ -35,7 +36,7 @@ public class ConexaoBD {
             //caminho para o banco de dados com: local, usuario, senha
             this.con = DriverManager.getConnection(url, user, pass);
             //mensagens para confirma conexão
-            System.out.println("Conexão realizada com sucesso!!");
+            //System.out.println("Conexão realizada com sucesso!!");
             return true;
         } catch (SQLException erro) {
             System.err.println("Erro: " + erro.getMessage());
@@ -50,8 +51,9 @@ public class ConexaoBD {
 
     /**
      * metodo executa um comando SQL pasado por @parametro um String Sql
+     *
      * @param sql
-     * @return 
+     * @return
      */
     public boolean executarSql(String sql) {
         try {
@@ -101,7 +103,7 @@ public class ConexaoBD {
     public boolean executarUpdateSQL(String sql) {
         try {
             this.statement = con.createStatement(
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             this.statement.executeUpdate(sql);
             return true;
 
@@ -138,7 +140,8 @@ public class ConexaoBD {
 
     /**
      * Metodo para encerrar conexão com o banco de dados
-     * @return 
+     *
+     * @return
      */
     public boolean getfecharConexao() {
         try {
@@ -146,7 +149,7 @@ public class ConexaoBD {
                 this.getResultSet().close();
                 this.statement.close();
             }
-             System.out.println("Conexão desligada com sucesso!!");
+            System.out.println("Conexão desligada com sucesso!!");
             this.getCon().close();
             return true;
         } catch (SQLException erro) {

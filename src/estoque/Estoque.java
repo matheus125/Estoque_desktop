@@ -11,7 +11,7 @@ import com.estoque.banco.ConexaoBD;
  *
  * @author mathe
  */
-public class Flex {
+public class Estoque {
 
     /**
      * @param args the command line arguments
