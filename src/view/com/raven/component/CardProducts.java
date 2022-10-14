@@ -1,13 +1,10 @@
 package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.controller.ControllerFuncionario;
 import com.estoque.controller.ControllerProduct;
 import com.estoque.model.Category;
-import com.estoque.model.Employees;
 import com.estoque.model.Inventory;
 import com.estoque.model.Product;
-import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -17,9 +14,10 @@ import java.awt.RenderingHints;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class CardProducts extends javax.swing.JPanel {
-    
+
     ConexaoBD con = new ConexaoBD();
 
     ControllerProduct controllerProduct = new ControllerProduct();
@@ -27,10 +25,7 @@ public class CardProducts extends javax.swing.JPanel {
     Product product = new Product();
     Inventory inventory = new Inventory();
 
-    ControllerFuncionario controllerFuncionarios = new ControllerFuncionario();
-    Employees employees = new Employees();
-    User user = new User();
-    ArrayList<User> listEmployees = new ArrayList<>();
+    ArrayList<Inventory> listProduct = new ArrayList<>();
 
     public Color getColor1() {
         return color1;
@@ -58,10 +53,10 @@ public class CardProducts extends javax.swing.JPanel {
         color2 = Color.WHITE;
         desabilitarCampos();
         desabilitarBotao();
-        
+        loadProductTable();
     }
-    
-     public void limparCampos() {
+
+    public void limparCampos() {
         qtdproduct.setText("");
         category_name.setText("");
         type.setText("");
@@ -128,7 +123,7 @@ public class CardProducts extends javax.swing.JPanel {
         boolean resultado = controllerProduct.controlSaveProduct(category, product, inventory);
         if (resultado == true) {
             JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
-            
+            loadProductTable();
             limparCampos();
             desabilitarCampos();
             desabilitarBotao();
@@ -137,7 +132,7 @@ public class CardProducts extends javax.swing.JPanel {
     }
 
     public void setData(Model_Card data) {
-     
+
         /*lbTitle.setText(data.getTitle());
         lbValues.setText(data.getValues());
         lbDescription.setText(data.getDescription());*/
@@ -223,9 +218,17 @@ public class CardProducts extends javax.swing.JPanel {
 
             },
             new String [] {
-
+                "ID", "Categorua", "Tipo", "Brand", "Size", "Bar_code", "Price", "Description", "Quantidade"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableProductMouseClicked(evt);
@@ -405,8 +408,8 @@ public class CardProducts extends javax.swing.JPanel {
         String nome = "" + tableProduct.getValueAt(tableProduct.getSelectedRow(), 0);
         con.getConectar();
         con.executarSql("select c.category_name, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.qtdproduct from "
-            + "tb_category c inner join tb_product p on c.id = p.id_category "
-            + "inner join tb_inventory i on p.id = i.id_product where category_name ='" + nome + "'");
+                + "tb_category c inner join tb_product p on c.id = p.id_category "
+                + "inner join tb_inventory i on p.id = i.id_product where category_name ='" + nome + "'");
         try {
             con.getResultSet().first();
             bar_code.setText(con.getResultSet().getString("bar_code"));
@@ -432,8 +435,8 @@ public class CardProducts extends javax.swing.JPanel {
         try {
 
             String search_product = ("select c.category_name, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.qtdproduct from "
-                + "tb_category c inner join tb_product p on c.id = p.id_category "
-                + "inner join tb_inventory i on p.id = i.id_product where bar_code like '" + this.search_product.getText() + "%'");
+                    + "tb_category c inner join tb_product p on c.id = p.id_category "
+                    + "inner join tb_inventory i on p.id = i.id_product where bar_code like '" + this.search_product.getText() + "%'");
             con.executarSql(search_product);
 
             if (con.getResultSet().first()) {
@@ -477,7 +480,27 @@ public class CardProducts extends javax.swing.JPanel {
         g2.fillOval(getWidth() - (getHeight() / 2) - 20, getHeight() / 2 + 20, getHeight(), getHeight());
         super.paintComponent(grphcs);
     }
-    
+
+    public void loadProductTable() {
+        listProduct = controllerProduct.returnListProductController();
+        DefaultTableModel table = (DefaultTableModel) tableProduct.getModel();
+        table.setNumRows(0);
+        //Inserir dados na tabela
+        int cont = listProduct.size();
+        for (int i = 0; i < cont; i++) {
+            table.addRow(new Object[]{
+                listProduct.get(i).getProduct().getCategory().getId(),
+                listProduct.get(i).getProduct().getCategory().getCategory_name(),
+                listProduct.get(i).getProduct().getType(),
+                listProduct.get(i).getProduct().getBrand(),
+                listProduct.get(i).getProduct().getSize(),
+                listProduct.get(i).getProduct().getBar_code(),
+                listProduct.get(i).getProduct().getPrice(),
+                listProduct.get(i).getProduct().getDescription(),
+                listProduct.get(i).getQtdproduct()
+            });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bar_code;

@@ -37,22 +37,6 @@ public class EmployeesDao extends ConexaoBD {
 
     }
 
- /*   public ArrayList<Employees> daoListemployees() {
-        ArrayList<Employees> listemployees = new ArrayList<>();
-        Employees employees = new Employees();
-        
-        try {
-            this.getConectar();
-            this.executarSql("sp_update_employees"
-                + ""
-            );
-        } catch (Exception e) {
-        
-        } finally {
-            this.getfecharConexao();
-        }
-    };
-*/
     /**
      * metodo listar funcionarios
      *

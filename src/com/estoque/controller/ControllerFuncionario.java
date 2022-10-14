@@ -15,14 +15,14 @@ import java.util.ArrayList;
  * @author mathe
  */
 public class ControllerFuncionario {
-       
+
     EmployeesDao employeesDao = new EmployeesDao();
-   
-    public ArrayList<User> returnListEmployeesController () {
-        return this.employeesDao.daoListemployees();
-    }
-    
-    public boolean controlSaveemployees (Employees employees, User user) {
+
+    public boolean controlSaveemployees(Employees employees, User user) {
         return this.employeesDao.daoSaveemployees(employees, user);
+    }
+
+    public ArrayList<User> returnListEmployeesController() {
+        return this.employeesDao.daoListemployees();
     }
 }
