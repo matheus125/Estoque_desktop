@@ -21,7 +21,11 @@ public class ControllerFuncionario {
     public boolean controlSaveemployees(Employees employees, User user) {
         return this.employeesDao.daoSaveemployees(employees, user);
     }
-
+    
+     public boolean controlUpdateemployees(Employees employees, User user) {
+        return this.employeesDao.daoUpdateemployees(employees, user);
+    }
+     
     public ArrayList<User> returnListEmployeesController() {
         return this.employeesDao.daoListemployees();
     }

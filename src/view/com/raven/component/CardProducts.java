@@ -2,9 +2,8 @@ package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerProduct;
-import com.estoque.model.Category;
-import com.estoque.model.Inventory;
 import com.estoque.model.Product;
+import com.estoque.model.Providers;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -18,14 +17,16 @@ import javax.swing.table.DefaultTableModel;
 
 public class CardProducts extends javax.swing.JPanel {
 
+    int id_category, id_product, flag = 0;
+
     ConexaoBD con = new ConexaoBD();
 
     ControllerProduct controllerProduct = new ControllerProduct();
-    Category category = new Category();
+   
     Product product = new Product();
-    Inventory inventory = new Inventory();
-
-    ArrayList<Inventory> listProduct = new ArrayList<>();
+    Providers providers = new Providers();
+    
+    ArrayList<Product> listProduct = new ArrayList<>();
 
     public Color getColor1() {
         return color1;
@@ -53,7 +54,7 @@ public class CardProducts extends javax.swing.JPanel {
         color2 = Color.WHITE;
         desabilitarCampos();
         desabilitarBotao();
-        loadProductTable();
+        //loadProductTable();
     }
 
     public void limparCampos() {
@@ -107,23 +108,45 @@ public class CardProducts extends javax.swing.JPanel {
     }
 
     public void saveProduct() {
-        category.setCategory_name(this.category_name.getText());
+        product.setType(this.type.getText());
+        product.setCategory(this.category_name.getText());
+        product.setBrand(this.brand.getText());
+        product.setSize(this.size.getText());
+        product.setDescription(this.description.getText());
+        product.setBar_code(this.bar_code.getText());
+        product.setPrice(Float.parseFloat(this.price.getText()));
+        product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
+        
+        boolean resultado = controllerProduct.controlSaveProduct(providers,product);
+        if (resultado == true) {
+            JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
+            //loadProductTable();
+            limparCampos();
+            desabilitarCampos();
+            desabilitarBotao();
+        }
 
+    }
+
+    public void updateProduct() {
+       
+        product.setCategory(this.category_name.getText());
+        
+        product.setId(this.id_product);
         product.setType(this.type.getText());
         product.setBrand(this.brand.getText());
-
         product.setType(this.type.getText());
         product.setBrand(this.brand.getText());
         product.setSize(this.size.getText());
         product.setDescription(this.description.getText());
         product.setBar_code(this.bar_code.getText());
         product.setPrice(Float.parseFloat(this.price.getText()));
-
-        inventory.setQtdproduct(Integer.parseInt(this.qtdproduct.getText()));
-        boolean resultado = controllerProduct.controlSaveProduct(category, product, inventory);
+        product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
+        
+        boolean resultado = controllerProduct.controlUpdateProduct(product);
         if (resultado == true) {
-            JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
-            loadProductTable();
+            JOptionPane.showMessageDialog(this, "Alterado com sucesso!!");
+            //loadProductTable();
             limparCampos();
             desabilitarCampos();
             desabilitarBotao();
@@ -218,7 +241,7 @@ public class CardProducts extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Categorua", "Tipo", "Brand", "Size", "Bar_code", "Price", "Description", "Quantidade"
+                "ID", "Categoria", "Tipo", "Brand", "Size", "Description", "Bar_code", "Price", "Quantidade"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -404,31 +427,22 @@ public class CardProducts extends javax.swing.JPanel {
         saveProduct();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void tableProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductMouseClicked
-        String nome = "" + tableProduct.getValueAt(tableProduct.getSelectedRow(), 0);
-        con.getConectar();
-        con.executarSql("select c.category_name, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.qtdproduct from "
-                + "tb_category c inner join tb_product p on c.id = p.id_category "
-                + "inner join tb_inventory i on p.id = i.id_product where category_name ='" + nome + "'");
-        try {
-            con.getResultSet().first();
-            bar_code.setText(con.getResultSet().getString("bar_code"));
-            description.setText(con.getResultSet().getString("description"));
-            category_name.setText(con.getResultSet().getString("category_name"));
-            brand.setText(con.getResultSet().getString("brand"));
-            type.setText(con.getResultSet().getString("type"));
-            size.setText(con.getResultSet().getString("size"));
-            price.setText(con.getResultSet().getString("price"));
-            qtdproduct.setText(con.getResultSet().getString("qtdproduct"));
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
-        }
-    }//GEN-LAST:event_tableProductMouseClicked
-
     private void category_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_nameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_category_nameActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        habilitarBotao();
+        habilitarCampos();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        updateProduct();
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void search_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_productActionPerformed
 
@@ -443,30 +457,40 @@ public class CardProducts extends javax.swing.JPanel {
                 bar_code.setText(con.getResultSet().getString("bar_code"));
                 description.setText(con.getResultSet().getString("description"));
                 category_name.setText(con.getResultSet().getString("category_name"));
+                qtdproduct.setText(con.getResultSet().getString("qtdproduct"));
                 brand.setText(con.getResultSet().getString("brand"));
                 type.setText(con.getResultSet().getString("type"));
                 size.setText(con.getResultSet().getString("size"));
                 price.setText(con.getResultSet().getString("price"));
-                qtdproduct.setText(con.getResultSet().getString("qtdproduct"));
             }
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
         }
     }//GEN-LAST:event_search_productActionPerformed
 
-    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        habilitarBotao();
-        habilitarCampos();
-    }//GEN-LAST:event_btnNovoActionPerformed
+    private void tableProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductMouseClicked
+        String nome = "" + tableProduct.getValueAt(tableProduct.getSelectedRow(), 1);
+        con.getConectar();
+        con.executarSql("select c.category_name, p.id_category, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.id_product,i.qtdproduct from "
+                + "tb_category c inner join tb_product p on c.id = p.id_category "
+                + "inner join tb_inventory i on p.id = i.id_product where category_name ='" + nome + "'");
+        try {
+            con.getResultSet().first();
+            id_category = Integer.parseInt(con.getResultSet().getString("id_category"));
+            id_product = Integer.parseInt(con.getResultSet().getString("id_product"));
+            bar_code.setText(con.getResultSet().getString("bar_code"));
+            description.setText(con.getResultSet().getString("description"));
+            category_name.setText(con.getResultSet().getString("category_name"));
+            brand.setText(con.getResultSet().getString("brand"));
+            type.setText(con.getResultSet().getString("type"));
+            size.setText(con.getResultSet().getString("size"));
+            price.setText(con.getResultSet().getString("price"));
+            qtdproduct.setText(con.getResultSet().getString("qtdproduct"));
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        limparCampos();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAlterarActionPerformed
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
+        }
+    }//GEN-LAST:event_tableProductMouseClicked
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -481,7 +505,7 @@ public class CardProducts extends javax.swing.JPanel {
         super.paintComponent(grphcs);
     }
 
-    public void loadProductTable() {
+   /* public void loadProductTable() {
         listProduct = controllerProduct.returnListProductController();
         DefaultTableModel table = (DefaultTableModel) tableProduct.getModel();
         table.setNumRows(0);
@@ -500,7 +524,7 @@ public class CardProducts extends javax.swing.JPanel {
                 listProduct.get(i).getQtdproduct()
             });
         }
-    }
+    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bar_code;

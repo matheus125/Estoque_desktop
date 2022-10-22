@@ -11,12 +11,15 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CardEmployees extends javax.swing.JPanel {
-    
+
+    int id, flag = 0;
+
     ConexaoBD con = new ConexaoBD();
 
     ControllerFuncionario controllerFuncionarios = new ControllerFuncionario();
@@ -52,7 +55,7 @@ public class CardEmployees extends javax.swing.JPanel {
         desabilitarBotao();
         loademployeesTable();
     }
-    
+
     public void limparCampos() {
         txtnome.setText("");
         txtlogin.setText("");
@@ -111,8 +114,28 @@ public class CardEmployees extends javax.swing.JPanel {
 
     }
 
+    public void updateEmployees() {
+        employees.setId(this.id);
+        employees.setEmployees_name(this.txtnome.getText());
+        employees.setEmployees_function((String) this.comboFunção.getSelectedItem());
+
+        user.setLogin(this.txtlogin.getText());
+        user.setPassword(CriptografarSenha.encriptografar(this.txtsenha.getText()));
+        user.setProfile((String) this.ComboPerfil.getSelectedItem());
+
+        boolean resultado = controllerFuncionarios.controlUpdateemployees(employees, user);
+        if (resultado == true) {
+            JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
+            loademployeesTable();
+            limparCampos();
+            desabilitarCampos();
+            desabilitarBotao();
+        }
+
+    }
+
     public void setData(Model_Card data) {
-     
+
         /*lbTitle.setText(data.getTitle());
         lbValues.setText(data.getValues());
         lbDescription.setText(data.getDescription());*/
@@ -170,7 +193,7 @@ public class CardEmployees extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Perfil:");
 
-        ComboPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Atendente", "Caixa", "Estoque" }));
+        ComboPerfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Caixa", "Estoque" }));
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -187,6 +210,11 @@ public class CardEmployees extends javax.swing.JPanel {
         });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Apagar");
 
@@ -213,6 +241,11 @@ public class CardEmployees extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        TableUserEmployees.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableUserEmployeesMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(TableUserEmployees);
@@ -277,9 +310,8 @@ public class CardEmployees extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtnome, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                     .addComponent(lb_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lb_function, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(comboFunção, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)))
+                    .addComponent(lb_function, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboFunção, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -307,12 +339,20 @@ public class CardEmployees extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        habilitarBotao();
+        flag = 1;
         habilitarCampos();
+        habilitarBotao();
+        btnNovo.setEnabled(false);
+        btnAlterar.setEnabled(false);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        saveEmployees();
+        if (flag == 1) {
+            saveEmployees();
+        } else {
+            updateEmployees();
+        };
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -320,6 +360,34 @@ public class CardEmployees extends javax.swing.JPanel {
         desabilitarBotao();
         desabilitarCampos();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void TableUserEmployeesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableUserEmployeesMouseClicked
+        btnAlterar.setEnabled(true);
+        String nome = "" + TableUserEmployees.getValueAt(TableUserEmployees.getSelectedRow(), 1);
+        con.getConectar();
+        con.executarSql("select e.id,e.employees_name, e.employees_function, u.login, u.password, u.access_level\n"
+                + "		from tb_employees e inner join tb_user u on e.id = u.id_employees where employees_name ='" + nome + "'");
+        try {
+            con.getResultSet().first();
+            id = Integer.parseInt(con.getResultSet().getString("id"));
+            txtnome.setText(con.getResultSet().getString("employees_name"));
+            comboFunção.setSelectedItem(con.getResultSet().getString("employees_function"));
+            txtlogin.setText(con.getResultSet().getString("login"));
+            txtsenha.setText(con.getResultSet().getString("password"));
+            ComboPerfil.setSelectedItem(con.getResultSet().getString("access_level"));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
+        }
+    }//GEN-LAST:event_TableUserEmployeesMouseClicked
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        flag = 2;
+        habilitarCampos();
+        habilitarBotao();
+        btnNovo.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -333,7 +401,7 @@ public class CardEmployees extends javax.swing.JPanel {
         g2.fillOval(getWidth() - (getHeight() / 2) - 20, getHeight() / 2 + 20, getHeight(), getHeight());
         super.paintComponent(grphcs);
     }
-    
+
     public void loademployeesTable() {
         listEmployees = controllerFuncionarios.returnListEmployeesController();
         DefaultTableModel table = (DefaultTableModel) TableUserEmployees.getModel();

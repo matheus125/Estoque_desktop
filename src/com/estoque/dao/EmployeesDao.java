@@ -48,8 +48,7 @@ public class EmployeesDao extends ConexaoBD {
         Employees employees = new Employees();
         try {
             this.getConectar();
-            this.executarSql("select e.id,e.employees_name, e.employees_function, u.login, u.password, u.profile\n" +
-"		from tb_employees e inner join tb_user u on e.id = u.id_employees");
+            this.executarSql("call sp_list_employees");
             while(this.getResultSet().next()){
                 user = new User();
                 employees = new Employees();
@@ -73,4 +72,29 @@ public class EmployeesDao extends ConexaoBD {
         }
         return listEmployees;
     }
+     
+     public boolean daoUpdateemployees(Employees employees, User user) {
+
+        String UpdateEmployees = "call sp_update_employees ("
+                + "'" + employees.getId()+ "',"
+                + "'" + employees.getEmployees_name()+ "',"
+                + "'" + employees.getEmployees_function()+ "',"
+                + "'" + user.getLogin()+ "',"
+                + "'" + user.getPassword()+ "',"
+                + "'" + user.getProfile()+ "'"
+                + ")";
+        try {
+            this.getConectar();
+            this.executarSql(UpdateEmployees);
+            return true;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return false;
+        } finally {
+             this.getfecharConexao();
+        }
+
+    }
+     
+     
 }

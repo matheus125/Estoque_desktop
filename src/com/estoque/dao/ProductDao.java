@@ -1,25 +1,25 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Category;
-import com.estoque.model.Inventory;
 import com.estoque.model.Product;
+import com.estoque.model.Providers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 public class ProductDao extends ConexaoBD {
 
-    public boolean daoSalveProduct(Category category, Product product, Inventory inventory) {
+    public boolean daoSalveProduct(Providers providers, Product product) {
 
         String SaveProduct = "call sp_save_product ("
-                + "'" + category.getCategory_name() + "',"
+                + "'" + product.getCategory() + "',"
                 + "'" + product.getType() + "',"
                 + "'" + product.getBrand() + "',"
                 + "'" + product.getSize() + "',"
                 + "'" + product.getDescription() + "',"
                 + "'" + product.getBar_code() + "',"
                 + "'" + product.getPrice() + "',"
-                + "'" + inventory.getQtdproduct() + "'"
+                + "'" + product.getProviders() + "'"
                 + ")";
         try {
             this.getConectar();
@@ -33,36 +33,27 @@ public class ProductDao extends ConexaoBD {
         }
     }
 
-    public ArrayList<Inventory> daoListProduct() {
-        ArrayList<Inventory> listProducts = new ArrayList<>();
-        Category category = new Category();
+  /*  public ArrayList<Product> daoListProduct() {
+        ArrayList<Product> listProducts = new ArrayList<>();
+
         Product product = new Product();
-        Inventory inventory = new Inventory();
 
         try {
             this.getConectar();
-            this.executarSql("select i.id_product , c.category_name, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.qtdproduct from tb_category c inner join tb_product p on c.id = p.id_category inner join tb_inventory i on p.id = i.id_product");
+            this.executarSql("call sp_list_products");
             while (this.getResultSet().next()) {
-                category = new Category();
+
                 product = new Product();
-                inventory = new Inventory();
 
-                category.setId(this.getResultSet().getInt(1));
-                category.setCategory_name(this.getResultSet().getString(2));
-
-                product.setType(this.getResultSet().getString(3));
-                product.setBrand(this.getResultSet().getString(4));
-                product.setSize(this.getResultSet().getString(5));
+                product.setType(this.getResultSet().getString(1));
+                product.setCategory(this.getResultSet().getString(2));
+                product.setBrand(this.getResultSet().getString(3));
+                product.setSize(this.getResultSet().getString(4));
+                product.setDescription(this.getResultSet().getString(5));
                 product.setBar_code(this.getResultSet().getString(6));
                 product.setPrice(this.getResultSet().getFloat(7));
-                product.setDescription(this.getResultSet().getString(8));
-                
-                product.setCategory(category);
-
-                inventory.setQtdproduct(this.getResultSet().getInt(9));
-
-                inventory.setProduct(product);
-                listProducts.add(inventory);
+                product.setQtd(this.getResultSet().getInt(8));
+                listProducts.add(product);
             }
         } catch (SQLException e) {
             System.out.println("Erro: " + e.getMessage());
@@ -70,5 +61,29 @@ public class ProductDao extends ConexaoBD {
             this.getfecharConexao();
         }
         return listProducts;
+    }*/
+
+    public boolean daoUpdateProduct(Product product) {
+
+        String UpdateProduct = "call sp_update_product ("
+                + "'" + product.getType() + "',"
+                + "'" + product.getCategory()+ "',"
+                + "'" + product.getBrand() + "',"
+                + "'" + product.getSize() + "',"
+                + "'" + product.getDescription() + "',"
+                + "'" + product.getBar_code() + "',"
+                + "'" + product.getPrice() + "',"
+                + "'" + product.getQtd()+ "'"
+                + ")";
+        try {
+            this.getConectar();
+            this.executarSql(UpdateProduct);
+            return true;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            return false;
+        } finally {
+            this.getfecharConexao();
+        }
     }
 }

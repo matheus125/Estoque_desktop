@@ -36,6 +36,11 @@ public class Form_Funcionarios extends javax.swing.JPanel {
 
         cardEmployees1.setColor1(new java.awt.Color(142, 142, 250));
         cardEmployees1.setColor2(new java.awt.Color(123, 123, 245));
+        cardEmployees1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cardEmployees1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -56,6 +61,10 @@ public class Form_Funcionarios extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cardEmployees1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardEmployees1MouseClicked
+       
+    }//GEN-LAST:event_cardEmployees1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

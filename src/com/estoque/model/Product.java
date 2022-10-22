@@ -3,15 +3,33 @@ package com.estoque.model;
 public class Product {
 
     private int id;
-    private Category category;
+    private String category;
     private String type;
     private String brand;
     private String size;
     private String description;
     private String bar_code;
     private Float price;
+    private int qtd; 
+    private Providers providers;
 
-  
+    public Product() {
+    }
+
+    public Product(int id, String category, String type, String brand, String size, String description, String bar_code, Float price, int qtd, Providers providers) {
+        this.id = id;
+        this.category = category;
+        this.type = type;
+        this.brand = brand;
+        this.size = size;
+        this.description = description;
+        this.bar_code = bar_code;
+        this.price = price;
+        this.qtd = qtd;
+        this.providers = providers;
+    }
+
+    
 
     /**
      * @return the id
@@ -30,14 +48,14 @@ public class Product {
     /**
      * @return the category
      */
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
     /**
      * @param category the category to set
      */
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -123,5 +141,33 @@ public class Product {
      */
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    /**
+     * @return the providers
+     */
+    public Providers getProviders() {
+        return providers;
+    }
+
+    /**
+     * @param providers the providers to set
+     */
+    public void setProviders(Providers providers) {
+        this.providers = providers;
+    }
+
+    /**
+     * @return the qtd
+     */
+    public int getQtd() {
+        return qtd;
+    }
+
+    /**
+     * @param qtd the qtd to set
+     */
+    public void setQtd(int qtd) {
+        this.qtd = qtd;
     }
 }

@@ -1,21 +1,24 @@
 package com.estoque.controller;
 
 import com.estoque.dao.ProductDao;
-import com.estoque.model.Category;
-import com.estoque.model.Inventory;
 import com.estoque.model.Product;
 import java.util.ArrayList;
+import com.estoque.model.Providers;
 
 public class ControllerProduct {
 
     ProductDao productDao = new ProductDao();
 
-    public boolean controlSaveProduct(Category category, Product product, Inventory inventory) {
-        return this.productDao.daoSalveProduct(category, product, inventory);
+    public boolean controlSaveProduct(Providers providers, Product product) {
+        return this.productDao.daoSalveProduct(providers, product);
     }
-    
-    public ArrayList<Inventory> returnListProductController () {
+
+    public boolean controlUpdateProduct(Product product) {
+        return this.productDao.daoUpdateProduct(product);
+    }
+
+    /*public ArrayList<Product> returnListProductController() {
         return this.productDao.daoListProduct();
-    }
+    }*/
 
 }

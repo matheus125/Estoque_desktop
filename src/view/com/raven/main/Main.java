@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import view.com.raven.event.EventMenuSelected;
 import java.sql.Timestamp;
 import view.com.raven.form.Form_Funcionarios;
+import view.com.raven.form.Form_Providers;
 
 /**
  *
@@ -31,6 +32,7 @@ public class Main extends javax.swing.JFrame {
     private Form_Product formProduct;
     private Form_Funcionarios formFuncionarios;
     private Form_Vendas formVendas;
+    private Form_Providers formProviders;
 
     int codUser;
 
@@ -44,6 +46,7 @@ public class Main extends javax.swing.JFrame {
         formProduct = new Form_Product();
         formFuncionarios = new Form_Funcionarios();
         formVendas = new Form_Vendas();
+        formProviders = new Form_Providers();
         menu.initMoving(Main.this);
 
         menu.addEventMenuSelected(new EventMenuSelected() {
@@ -54,12 +57,15 @@ public class Main extends javax.swing.JFrame {
                         setForm(home);
                         break;
                     case 1:
-                        CheckLogin();
+                        setForm(formProviders);
                         break;
                     case 2:
+                        CheckLogin();
+                        break;
+                    case 3:
                         setForm(formFuncionarios);
                         break;
-                    case 6:
+                    case 4:
                         setForm(formVendas);
                         break;
                     default:
@@ -81,7 +87,7 @@ public class Main extends javax.swing.JFrame {
             Form_Product formProduct = new Form_Product();
             con.executarSql("select*from tb_user where login='" + lbusuarios.getText() + "'");
             con.getResultSet().first();
-            if (con.getResultSet().getString("profile").equals("Administrador")) {
+            if (con.getResultSet().getString("access_level").equals("Administrador")) {
                 if (formProduct == formProduct) {
                     setForm(formProduct);
                     formProduct.setVisible(true);
