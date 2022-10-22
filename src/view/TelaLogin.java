@@ -28,7 +28,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     //Variaveis globais
     int codUser;
-
+    
     /**
      * Creates new form TelaLogin
      */
@@ -350,7 +350,8 @@ public class TelaLogin extends javax.swing.JFrame {
                 txtsenha.requestFocus();
             } else if (con.getResultSet().getString("password").equals(CriptografarSenha.encriptografar(txtsenha.getText()))) {
                 salvarUserLogs();
-                Main telamenu = new Main(txtLogin.getText());
+                Main telamenu = new Main();
+                telamenu.usuário = con.getResultSet().getString("login");
                 telamenu.setVisible(true);
                 dispose();
             } else {

@@ -1,6 +1,5 @@
 package view.com.raven.component;
 
-
 import view.com.raven.model.Model_Menu;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -14,7 +13,7 @@ import javax.swing.JFrame;
 import view.com.raven.event.EventMenuSelected;
 
 public class Menu extends javax.swing.JPanel {
-    
+
     private EventMenuSelected event;
 
     public void addEventMenuSelected(EventMenuSelected event) {
@@ -34,17 +33,17 @@ public class Menu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu("4", "Fornecedores", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("221", "Produtos", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("3", "Funcionarios", Model_Menu.MenuType.MENU));
-    /*    listMenu1.addItem(new Model_Menu("5", "Date Table", Model_Menu.MenuType.MENU));*/
+        listMenu1.addItem(new Model_Menu("5", "Caixa", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
 
         listMenu1.addItem(new Model_Menu("", "Vendas", Model_Menu.MenuType.TITLE));
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("6", "Caixa", Model_Menu.MenuType.MENU));
-/*      listMenu1.addItem(new Model_Menu("7", "Sample Page", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("7", "Sample Page", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("8", "Extra", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("9", "More", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("10", "Logout", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));*/
+        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
     }
 
     @SuppressWarnings("unchecked")

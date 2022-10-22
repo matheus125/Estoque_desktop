@@ -1,16 +1,7 @@
 package view.com.raven.form;
 
-import com.estoque.banco.ConexaoBD;
-import com.estoque.controller.ControllerProduct;
 
-import com.estoque.model.Product;
-import com.estoque.tabelas.ProductsTable;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import view.com.raven.model.Model_Card;
 
 public class Form_Product extends javax.swing.JPanel {

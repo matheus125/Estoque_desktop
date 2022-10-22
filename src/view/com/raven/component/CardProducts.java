@@ -2,6 +2,7 @@ package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerProduct;
+import com.estoque.dao.ProvidersDao;
 import com.estoque.model.Product;
 import com.estoque.model.Providers;
 import view.com.raven.model.Model_Card;
@@ -12,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -117,6 +119,10 @@ public class CardProducts extends javax.swing.JPanel {
         product.setPrice(Float.parseFloat(this.price.getText()));
         product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
         
+        Providers providers = new Providers();
+        providers = (Providers)combomfornecedores.getSelectedItem();
+        product.setProviders(providers);
+        
         boolean resultado = controllerProduct.controlSaveProduct(providers,product);
         if (resultado == true) {
             JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
@@ -190,6 +196,7 @@ public class CardProducts extends javax.swing.JPanel {
         type = new javax.swing.JTextField();
         btnAlterar = new javax.swing.JButton();
         brand = new javax.swing.JTextField();
+        combomfornecedores = new javax.swing.JComboBox();
 
         btnRemover.setText("Remover");
         btnRemover.addActionListener(new java.awt.event.ActionListener() {
@@ -300,6 +307,17 @@ public class CardProducts extends javax.swing.JPanel {
             }
         });
 
+        combomfornecedores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
+        combomfornecedores.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                combomfornecedoresAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -332,11 +350,13 @@ public class CardProducts extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
-                                .addComponent(bar_code))
+                                .addComponent(bar_code, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
-                                .addComponent(brand, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(brand, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                    .addComponent(combomfornecedores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -396,7 +416,9 @@ public class CardProducts extends javax.swing.JPanel {
                     .addComponent(size, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57)
+                .addGap(18, 18, 18)
+                .addComponent(combomfornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnNovo)
@@ -492,6 +514,16 @@ public class CardProducts extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tableProductMouseClicked
 
+    private void combomfornecedoresAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_combomfornecedoresAncestorAdded
+        ProvidersDao providersDao = new ProvidersDao();
+        List<Providers> listProviders = providersDao.daoListProviders();
+        combomfornecedores.removeAll();
+        
+        for (Providers providers:listProviders) {
+            combomfornecedores.addItem(providers);
+        }
+    }//GEN-LAST:event_combomfornecedoresAncestorAdded
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs;
@@ -535,6 +567,7 @@ public class CardProducts extends javax.swing.JPanel {
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JTextField category_name;
+    private javax.swing.JComboBox combomfornecedores;
     private javax.swing.JLabel descricao;
     private javax.swing.JTextField description;
     private javax.swing.JButton jButton1;

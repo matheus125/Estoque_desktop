@@ -14,13 +14,13 @@ import java.awt.Color;
 import static java.awt.SystemColor.menu;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Time;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import view.com.raven.event.EventMenuSelected;
 import java.sql.Timestamp;
 import view.com.raven.form.Form_Funcionarios;
 import view.com.raven.form.Form_Providers;
+import view.com.raven.component.Menu;
 
 /**
  *
@@ -36,9 +36,11 @@ public class Main extends javax.swing.JFrame {
 
     int codUser;
 
+    public String usuário;
+
     ConexaoBD con = new ConexaoBD();
 
-    public Main(String usuário) {
+    public Main() {
         initComponents();
         con.getConectar();
         setBackground(new Color(0, 0, 0, 0));
@@ -47,14 +49,15 @@ public class Main extends javax.swing.JFrame {
         formFuncionarios = new Form_Funcionarios();
         formVendas = new Form_Vendas();
         formProviders = new Form_Providers();
-        menu.initMoving(Main.this);
+        menu1.initMoving(Main.this);
 
-        menu.addEventMenuSelected(new EventMenuSelected() {
+        menu1.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 switch (index) {
                     case 0:
-                        setForm(home);
+
+                        setForm(formVendas);
                         break;
                     case 1:
                         setForm(formProviders);
@@ -65,21 +68,17 @@ public class Main extends javax.swing.JFrame {
                     case 3:
                         setForm(formFuncionarios);
                         break;
-                    case 4:
-                        setForm(formVendas);
+                    case 8:
+                        setForm(home);
                         break;
                     default:
                         break;
                 }
             }
         });
-        lbusuarios.setText(usuário);
+        
         //  set when system open start with home form
         setForm(new Form_Home());
-    }
-
-    private Main() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void CheckLogin() {
@@ -142,11 +141,16 @@ public class Main extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lbusuarios = new javax.swing.JLabel();
-        menu = new view.com.raven.component.Menu();
         btn_sair = new javax.swing.JButton();
+        menu1 = new view.com.raven.component.Menu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         panelBorder1.setBackground(new java.awt.Color(242, 238, 238));
 
@@ -157,12 +161,6 @@ public class Main extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Usuário:");
-
-        menu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuMouseClicked(evt);
-            }
-        });
 
         btn_sair.setText("sair");
         btn_sair.addActionListener(new java.awt.event.ActionListener() {
@@ -176,20 +174,19 @@ public class Main extends javax.swing.JFrame {
         panelBorder1Layout.setHorizontalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBorder1Layout.createSequentialGroup()
-                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jLabel1)
                         .addGap(20, 20, 20)
                         .addComponent(lbusuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(208, 208, 208)
+                        .addGap(42, 42, 42)
                         .addComponent(btn_sair))
                     .addComponent(header2, javax.swing.GroupLayout.PREFERRED_SIZE, 1095, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1095, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1095, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,17 +194,14 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(header2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbusuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)))
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_sair)))
-                .addContainerGap(20, Short.MAX_VALUE))
-            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lbusuarios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
+                    .addComponent(btn_sair))
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,9 +225,9 @@ public class Main extends javax.swing.JFrame {
         con.getfecharConexao();
     }//GEN-LAST:event_btn_sairActionPerformed
 
-    private void menuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuMouseClicked
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       lbusuarios.setText(usuário);
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -278,7 +272,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbusuarios;
     private javax.swing.JPanel mainPanel;
-    private view.com.raven.component.Menu menu;
+    private view.com.raven.component.Menu menu1;
     private view.com.raven.swing.PanelBorder panelBorder1;
     // End of variables declaration//GEN-END:variables
 }

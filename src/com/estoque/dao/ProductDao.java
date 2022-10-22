@@ -12,14 +12,15 @@ public class ProductDao extends ConexaoBD {
     public boolean daoSalveProduct(Providers providers, Product product) {
 
         String SaveProduct = "call sp_save_product ("
-                + "'" + product.getCategory() + "',"
                 + "'" + product.getType() + "',"
+                + "'" + product.getCategory() + "',"
                 + "'" + product.getBrand() + "',"
                 + "'" + product.getSize() + "',"
                 + "'" + product.getDescription() + "',"
                 + "'" + product.getBar_code() + "',"
                 + "'" + product.getPrice() + "',"
-                + "'" + product.getProviders() + "'"
+                + "'" + product.getQtd()+ "',"
+                + "'" + product.getProviders().getId() + "'"
                 + ")";
         try {
             this.getConectar();
