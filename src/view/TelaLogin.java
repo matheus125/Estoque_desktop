@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import com.estoque.dao.CriptografarSenha;
+import com.estoque.dao.UserDao;
 
 /**
  *
@@ -28,7 +29,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     //Variaveis globais
     int codUser;
-    
+
     /**
      * Creates new form TelaLogin
      */
@@ -338,6 +339,20 @@ public class TelaLogin extends javax.swing.JFrame {
     private void btnAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcessarActionPerformed
 
         try {
+            String login, password;
+
+            login = txtLogin.getText();
+            password = CriptografarSenha.encriptografar(txtsenha.getText());
+
+            UserDao userDao = new UserDao();
+            userDao.efetuarLogin(login, password);
+            salvarUserLogs();
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro");
+        }
+
+        /*   try {
             con.executarSql("select*from tb_user where login='" + txtLogin.getText() + "'");
             con.getResultSet().first();
             if (txtLogin.getText().isEmpty()) {
@@ -362,7 +377,7 @@ public class TelaLogin extends javax.swing.JFrame {
             erroSenha();
             JOptionPane.showMessageDialog(null, "Usuario não encontrado nos registros!");
 
-        }
+        }*/
 
     }//GEN-LAST:event_btnAcessarActionPerformed
 
