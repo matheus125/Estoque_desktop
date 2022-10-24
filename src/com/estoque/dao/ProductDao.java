@@ -3,9 +3,11 @@ package com.estoque.dao;
 import com.estoque.banco.ConexaoBD;
 import com.estoque.model.Product;
 import com.estoque.model.Providers;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import javax.swing.JOptionPane;
 
 public class ProductDao extends ConexaoBD {
 
@@ -19,7 +21,7 @@ public class ProductDao extends ConexaoBD {
                 + "'" + product.getDescription() + "',"
                 + "'" + product.getBar_code() + "',"
                 + "'" + product.getPrice() + "',"
-                + "'" + product.getQtd()+ "',"
+                + "'" + product.getQtd() + "',"
                 + "'" + product.getProviders().getId() + "'"
                 + ")";
         try {
@@ -34,7 +36,7 @@ public class ProductDao extends ConexaoBD {
         }
     }
 
-  /*  public ArrayList<Product> daoListProduct() {
+    /*  public ArrayList<Product> daoListProduct() {
         ArrayList<Product> listProducts = new ArrayList<>();
 
         Product product = new Product();
@@ -63,18 +65,17 @@ public class ProductDao extends ConexaoBD {
         }
         return listProducts;
     }*/
-
     public boolean daoUpdateProduct(Product product) {
 
         String UpdateProduct = "call sp_update_product ("
                 + "'" + product.getType() + "',"
-                + "'" + product.getCategory()+ "',"
+                + "'" + product.getCategory() + "',"
                 + "'" + product.getBrand() + "',"
                 + "'" + product.getSize() + "',"
                 + "'" + product.getDescription() + "',"
                 + "'" + product.getBar_code() + "',"
                 + "'" + product.getPrice() + "',"
-                + "'" + product.getQtd()+ "'"
+                + "'" + product.getQtd() + "'"
                 + ")";
         try {
             this.getConectar();
@@ -87,4 +88,35 @@ public class ProductDao extends ConexaoBD {
             this.getfecharConexao();
         }
     }
+
+    public Product buscarCodigoBarra(String Codigo) {
+        this.getConectar();
+        try {
+            String sql = "select p.id, p.type, p.category_name, p.brand, p.size, p.description, p.bar_code, p.price, p.qtdproduct\n"
+                    + " from tb_product as p inner join tb_providers as pr on (p.id_providers = pr.id) where p.bar_code = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, Codigo);
+
+            ResultSet rs = stmt.executeQuery();
+            Product product = new Product();
+
+            if (rs.next()) {
+                product.setId(rs.getInt("id"));
+                product.setType(rs.getString("type"));
+                product.setCategory(rs.getString("category_name"));
+                product.setBrand(rs.getString("brand"));
+                product.setSize(rs.getString("size"));
+                product.setDescription(rs.getString("description"));
+                product.setBar_code(rs.getString("bar_code"));
+                product.setPrice(rs.getFloat("price"));
+                product.setQtd(rs.getInt("qtdproduct"));
+            }
+
+            return product;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Não encontrado");
+        }
+        return null;
+    }
+
 }

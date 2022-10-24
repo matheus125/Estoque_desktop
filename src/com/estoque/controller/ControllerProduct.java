@@ -20,5 +20,8 @@ public class ControllerProduct {
     /*public ArrayList<Product> returnListProductController() {
         return this.productDao.daoListProduct();
     }*/
+    public Product controlBuscarProdutoPorID(String Codigo) {
+        return this.productDao.buscarCodigoBarra(Codigo);
+    }
 
 }

@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import view.com.raven.form.Form_Funcionarios;
 import view.com.raven.form.Form_Providers;
 import view.com.raven.component.Menu;
+import view.com.raven.form.Form_Pagamento;
 
 /**
  *
@@ -33,7 +34,7 @@ public class Main extends javax.swing.JFrame {
     private Form_Funcionarios formFuncionarios;
     private Form_Vendas formVendas;
     private Form_Providers formProviders;
-
+    private Form_Pagamento formPagamento;
     int codUser;
 
     public String usuário;
@@ -49,6 +50,7 @@ public class Main extends javax.swing.JFrame {
         formFuncionarios = new Form_Funcionarios();
         formVendas = new Form_Vendas();
         formProviders = new Form_Providers();
+        formPagamento = new Form_Pagamento();
         menu1.initMoving(Main.this);
 
         menu1.addEventMenuSelected(new EventMenuSelected() {
@@ -56,7 +58,6 @@ public class Main extends javax.swing.JFrame {
             public void selected(int index) {
                 switch (index) {
                     case 0:
-
                         setForm(formVendas);
                         break;
                     case 1:
@@ -68,6 +69,9 @@ public class Main extends javax.swing.JFrame {
                     case 3:
                         setForm(formFuncionarios);
                         break;
+                    case 4:
+                        setForm(formPagamento);
+                        break;
                     case 8:
                         setForm(home);
                         break;
@@ -76,7 +80,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         //  set when system open start with home form
         setForm(new Form_Home());
     }
@@ -226,7 +230,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_sairActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-       lbusuarios.setText(usuário);
+        lbusuarios.setText(usuário);
     }//GEN-LAST:event_formWindowActivated
 
     /**

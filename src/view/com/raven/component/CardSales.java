@@ -1,13 +1,26 @@
 package view.com.raven.component;
 
+import com.estoque.controller.ControllerClient;
+import com.estoque.controller.ControllerProduct;
+import com.estoque.model.Client;
+import com.estoque.model.Product;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CardSales extends javax.swing.JPanel {
+
+    ControllerClient controllerClient = new ControllerClient();
+    ControllerProduct controllerProduct = new ControllerProduct();
+
+    Client client = new Client();
+    Product product = new Product();
 
     public Color getColor1() {
         return color1;
@@ -33,10 +46,15 @@ public class CardSales extends javax.swing.JPanel {
         setOpaque(false);
         color1 = Color.BLACK;
         color2 = Color.WHITE;
+
+        Date data = new Date();
+        SimpleDateFormat dataBr = new SimpleDateFormat("dd/MM/yyyy");
+        String dataformatada = dataBr.format(data);
+        txtdata.setText(dataformatada);
     }
 
     public void setData(Model_Card data) {
-      
+
     }
 
     @SuppressWarnings("unchecked")
@@ -48,24 +66,25 @@ public class CardSales extends javax.swing.JPanel {
         btnAdicionarItem2 = new javax.swing.JButton();
         lbTitle5 = new javax.swing.JLabel();
         lbTitle4 = new javax.swing.JLabel();
-        txtnomecliente1 = new javax.swing.JTextField();
-        txtcpfCliente1 = new javax.swing.JFormattedTextField();
+        txtnomecliente = new javax.swing.JTextField();
+        txtcpfCliente = new javax.swing.JFormattedTextField();
         lbTitle6 = new javax.swing.JLabel();
         btnPesquisarCliente = new javax.swing.JButton();
-        txtdata1 = new javax.swing.JTextField();
+        txtdata = new javax.swing.JTextField();
         lbTitle2 = new javax.swing.JLabel();
-        txtcodigo = new javax.swing.JFormattedTextField();
         btnPesquisarProduto = new javax.swing.JButton();
         txtproduto = new javax.swing.JTextField();
         lbTitle = new javax.swing.JLabel();
         lbTitle3 = new javax.swing.JLabel();
-        txtdata = new javax.swing.JTextField();
+        txpreco = new javax.swing.JTextField();
         btnAdicionarItem = new javax.swing.JButton();
-        txtdata2 = new javax.swing.JTextField();
+        txtqtd = new javax.swing.JTextField();
         lbValues = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtValorTotal = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         TabelaCarrinhoVendas = new javax.swing.JTable();
+        txtcodigoProduto = new javax.swing.JTextField();
+        lbTitle7 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -83,17 +102,42 @@ public class CardSales extends javax.swing.JPanel {
         lbTitle4.setForeground(new java.awt.Color(255, 255, 255));
         lbTitle4.setText("Nome:");
 
+        txtnomecliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtnomeclienteKeyPressed(evt);
+            }
+        });
+
+        txtcpfCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcpfClienteKeyPressed(evt);
+            }
+        });
+
         lbTitle6.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbTitle6.setForeground(new java.awt.Color(255, 255, 255));
         lbTitle6.setText("DATA:");
 
         btnPesquisarCliente.setText("Pesquisar");
+        btnPesquisarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarClienteActionPerformed(evt);
+            }
+        });
+
+        txtdata.setEditable(false);
+        txtdata.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         lbTitle2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbTitle2.setForeground(new java.awt.Color(255, 255, 255));
         lbTitle2.setText("Código:");
 
         btnPesquisarProduto.setText("Pesquisar");
+        btnPesquisarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarProdutoActionPerformed(evt);
+            }
+        });
 
         lbTitle.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(255, 255, 255));
@@ -109,9 +153,9 @@ public class CardSales extends javax.swing.JPanel {
         lbValues.setForeground(new java.awt.Color(255, 255, 255));
         lbValues.setText("TOTAL DA VENDA:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtValorTotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtValorTotalActionPerformed(evt);
             }
         });
 
@@ -125,6 +169,16 @@ public class CardSales extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TabelaCarrinhoVendas);
 
+        txtcodigoProduto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcodigoProdutoKeyPressed(evt);
+            }
+        });
+
+        lbTitle7.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        lbTitle7.setForeground(new java.awt.Color(255, 255, 255));
+        lbTitle7.setText("Qtd:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,45 +186,41 @@ public class CardSales extends javax.swing.JPanel {
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbTitle3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(txpreco, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(lbTitle7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtqtd, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lbTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtcodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtproduto, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTitle5, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbTitle4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lbTitle5, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtcpfCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtcpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(lbTitle6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lbTitle4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtnomecliente1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtnomecliente, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtdata1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPesquisarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lbTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lbTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtproduto, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addComponent(btnPesquisarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lbTitle3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtdata, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(79, 79, 79)
-                                .addComponent(txtdata2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(34, 34, 34)))
-                .addGap(65, 65, 65)
+                            .addComponent(txtdata, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPesquisarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(52, 52, 52)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -179,7 +229,7 @@ public class CardSales extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbValues)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(134, 134, 134))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -197,19 +247,19 @@ public class CardSales extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTitle5)
-                            .addComponent(txtcpfCliente1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcpfCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbTitle6)
-                            .addComponent(txtdata1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtdata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTitle4)
-                            .addComponent(txtnomecliente1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtnomecliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnPesquisarCliente))
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTitle2)
-                            .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPesquisarProduto))
+                            .addComponent(btnPesquisarProduto)
+                            .addComponent(txtcodigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTitle)
@@ -217,8 +267,9 @@ public class CardSales extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTitle3)
-                            .addComponent(txtdata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtdata2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txpreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtqtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbTitle7)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -228,7 +279,7 @@ public class CardSales extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lbValues, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdicionarItem1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -237,9 +288,40 @@ public class CardSales extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtValorTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorTotalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtValorTotalActionPerformed
+
+    private void txtcpfClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcpfClienteKeyPressed
+        // buscar cliente por cpf
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            client = controllerClient.controlBuscarCpf(txtcpfCliente.getText());
+            txtnomecliente.setText(client.getName());
+        }
+    }//GEN-LAST:event_txtcpfClienteKeyPressed
+
+    private void btnPesquisarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarClienteActionPerformed
+        client = controllerClient.controlBuscarCpf(txtcpfCliente.getText());
+        txtnomecliente.setText(client.getName());
+    }//GEN-LAST:event_btnPesquisarClienteActionPerformed
+
+    private void txtnomeclienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnomeclienteKeyPressed
+
+    }//GEN-LAST:event_txtnomeclienteKeyPressed
+
+    private void txtcodigoProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcodigoProdutoKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            product = controllerProduct.controlBuscarProdutoPorID(txtcodigoProduto.getText());
+            txtproduto.setText(product.getDescription());
+            txpreco.setText(String.valueOf(product.getPrice()));
+        }
+    }//GEN-LAST:event_txtcodigoProdutoKeyPressed
+
+    private void btnPesquisarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarProdutoActionPerformed
+        product = controllerProduct.controlBuscarProdutoPorID(txtcodigoProduto.getText());
+        txtproduto.setText(product.getDescription());
+        txpreco.setText(String.valueOf(product.getPrice()));
+    }//GEN-LAST:event_btnPesquisarProdutoActionPerformed
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -263,20 +345,21 @@ public class CardSales extends javax.swing.JPanel {
     private javax.swing.JButton btnPesquisarProduto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel lbTitle2;
     private javax.swing.JLabel lbTitle3;
     private javax.swing.JLabel lbTitle4;
     private javax.swing.JLabel lbTitle5;
     private javax.swing.JLabel lbTitle6;
+    private javax.swing.JLabel lbTitle7;
     private javax.swing.JLabel lbValues;
-    private javax.swing.JFormattedTextField txtcodigo;
-    private javax.swing.JFormattedTextField txtcpfCliente1;
+    private javax.swing.JTextField txpreco;
+    private javax.swing.JTextField txtValorTotal;
+    private javax.swing.JTextField txtcodigoProduto;
+    private javax.swing.JFormattedTextField txtcpfCliente;
     private javax.swing.JTextField txtdata;
-    private javax.swing.JTextField txtdata1;
-    private javax.swing.JTextField txtdata2;
-    private javax.swing.JTextField txtnomecliente1;
+    private javax.swing.JTextField txtnomecliente;
     private javax.swing.JTextField txtproduto;
+    private javax.swing.JTextField txtqtd;
     // End of variables declaration//GEN-END:variables
 }
