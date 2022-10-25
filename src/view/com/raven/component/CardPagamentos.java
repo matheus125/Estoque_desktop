@@ -1,9 +1,9 @@
 package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.controller.ControllerFuncionario;
-import com.estoque.dao.CriptografarSenha;
-import com.estoque.model.Employees;
+import com.estoque.dao.SalesDao;
+import com.estoque.model.Client;
+import com.estoque.model.Sales;
 import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
@@ -11,14 +11,17 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CardPagamentos extends javax.swing.JPanel {
 
     ConexaoBD con = new ConexaoBD();
 
+    Client client_id = new Client();
+    Sales sales = new Sales();
+    SalesDao salesDao = new SalesDao();
+    
     public Color getColor1() {
         return color1;
     }
@@ -44,10 +47,9 @@ public class CardPagamentos extends javax.swing.JPanel {
         color1 = Color.BLACK;
         color2 = Color.WHITE;
 
-    }
-
-    public void saveEmployees() {
-
+        txtcartão.setText("0");
+        txtdinheiro.setText("0");
+        txtpix.setText("0");
     }
 
     public void setData(Model_Card data) {
@@ -63,16 +65,16 @@ public class CardPagamentos extends javax.swing.JPanel {
 
         lb_name = new javax.swing.JLabel();
         lb_login = new javax.swing.JLabel();
-        txtlogin = new javax.swing.JTextField();
-        txtnome = new javax.swing.JTextField();
+        txtcartão = new javax.swing.JTextField();
+        txtdinheiro = new javax.swing.JTextField();
         lb_function = new javax.swing.JLabel();
         lb_password = new javax.swing.JLabel();
-        txtsenha = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
         btnFinalizarVenda = new javax.swing.JButton();
-        txtlogin1 = new javax.swing.JTextField();
-        txtsenha1 = new javax.swing.JPasswordField();
+        txtpix = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        txtvltotal = new javax.swing.JTextField();
+        txttrocofinal = new javax.swing.JTextField();
 
         lb_name.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lb_name.setForeground(new java.awt.Color(255, 255, 255));
@@ -82,10 +84,6 @@ public class CardPagamentos extends javax.swing.JPanel {
         lb_login.setForeground(new java.awt.Color(255, 255, 255));
         lb_login.setText("CARTÃO:");
 
-        txtlogin.setEnabled(false);
-
-        txtnome.setEnabled(false);
-
         lb_function.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lb_function.setForeground(new java.awt.Color(255, 255, 255));
         lb_function.setText("TROCO:");
@@ -93,8 +91,6 @@ public class CardPagamentos extends javax.swing.JPanel {
         lb_password.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         lb_password.setForeground(new java.awt.Color(255, 255, 255));
         lb_password.setText("TOTAL:");
-
-        txtsenha.setEnabled(false);
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -107,25 +103,25 @@ public class CardPagamentos extends javax.swing.JPanel {
             }
         });
 
-        txtlogin1.setEnabled(false);
-
-        txtsenha1.setEnabled(false);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Pagamentos");
+
+        txtvltotal.setEnabled(false);
+
+        txttrocofinal.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(154, 154, 154)
                         .addComponent(btnFinalizarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lb_password, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lb_function, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -134,11 +130,11 @@ public class CardPagamentos extends javax.swing.JPanel {
                             .addComponent(lb_name, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtnome)
-                            .addComponent(txtlogin)
-                            .addComponent(txtlogin1)
-                            .addComponent(txtsenha)
-                            .addComponent(txtsenha1))))
+                            .addComponent(txtdinheiro)
+                            .addComponent(txtcartão)
+                            .addComponent(txtpix)
+                            .addComponent(txttrocofinal)
+                            .addComponent(txtvltotal))))
                 .addGap(147, 147, 147))
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -149,31 +145,63 @@ public class CardPagamentos extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                     .addComponent(lb_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtnome, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+                    .addComponent(txtdinheiro, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtcartão, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lb_login, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtlogin1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtpix, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lb_function, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                    .addComponent(txtsenha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lb_function, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lb_password, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txttrocofinal, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtvltotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 7, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lb_password, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtsenha1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addComponent(btnFinalizarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVendaActionPerformed
+        double pcartao, ppix, pdinheiro, totalpago, totalvenda, troco;
 
+        pcartao = Double.parseDouble(txtcartão.getText());
+        ppix = Double.parseDouble(txtpix.getText());
+        pdinheiro = Double.parseDouble(txtdinheiro.getText());
+
+        totalvenda = Double.parseDouble(txtvltotal.getText());
+        // Calcular o total e troco
+        totalpago = pcartao + ppix + pdinheiro;
+        // Calcular do troco
+        troco = totalpago - totalvenda;
+        txttrocofinal.setText(String.valueOf(troco));
+        
+        //Dados do cliente e usuario (client_id, user_id)
+       
+        sales.setClient(client_id);
+        
+        //Pegar a data da venda
+        Date data = new Date();
+        SimpleDateFormat dataEUA = new SimpleDateFormat("yyyy-MM-dd");
+        String dataformatada = dataEUA.format(data);
+        
+        sales.setSale_date(dataformatada);
+        //Total da venda
+        sales.setValue_total(totalvenda);
+        
+        //Tipo pagamento
+        sales.setType_payment(txtdinheiro.getText());
+        
+        salesDao.cadastrarVenda(sales);
     }//GEN-LAST:event_btnFinalizarVendaActionPerformed
 
     @Override
@@ -190,17 +218,17 @@ public class CardPagamentos extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFinalizarVenda;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel lb_function;
-    private javax.swing.JLabel lb_login;
-    private javax.swing.JLabel lb_name;
-    private javax.swing.JLabel lb_password;
-    private javax.swing.JTextField txtlogin;
-    private javax.swing.JTextField txtlogin1;
-    private javax.swing.JTextField txtnome;
-    private javax.swing.JPasswordField txtsenha;
-    private javax.swing.JPasswordField txtsenha1;
+    public javax.swing.JButton btnFinalizarVenda;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel lb_function;
+    public javax.swing.JLabel lb_login;
+    public javax.swing.JLabel lb_name;
+    public javax.swing.JLabel lb_password;
+    public javax.swing.JTextField txtcartão;
+    public javax.swing.JTextField txtdinheiro;
+    public javax.swing.JTextField txtpix;
+    public javax.swing.JTextField txttrocofinal;
+    public javax.swing.JTextField txtvltotal;
     // End of variables declaration//GEN-END:variables
 }

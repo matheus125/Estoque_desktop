@@ -4,6 +4,7 @@ import com.estoque.controller.ControllerClient;
 import com.estoque.controller.ControllerProduct;
 import com.estoque.model.Client;
 import com.estoque.model.Product;
+import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -13,14 +14,23 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import view.FormaPagamento;
 
 public class CardSales extends javax.swing.JPanel {
 
     ControllerClient controllerClient = new ControllerClient();
     ControllerProduct controllerProduct = new ControllerProduct();
-
+    
+    User user = new User();
+    
     Client client = new Client();
     Product product = new Product();
+
+    double total, preco, subtotal;
+    int qtd;
+
+    DefaultTableModel carrinho;
 
     public Color getColor1() {
         return color1;
@@ -51,6 +61,9 @@ public class CardSales extends javax.swing.JPanel {
         SimpleDateFormat dataBr = new SimpleDateFormat("dd/MM/yyyy");
         String dataformatada = dataBr.format(data);
         txtdata.setText(dataformatada);
+
+        txtqtd.setText("1");
+
     }
 
     public void setData(Model_Card data) {
@@ -62,7 +75,7 @@ public class CardSales extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        btnAdicionarItem1 = new javax.swing.JButton();
+        btnPagamento = new javax.swing.JButton();
         btnAdicionarItem2 = new javax.swing.JButton();
         lbTitle5 = new javax.swing.JLabel();
         lbTitle4 = new javax.swing.JLabel();
@@ -76,7 +89,7 @@ public class CardSales extends javax.swing.JPanel {
         txtproduto = new javax.swing.JTextField();
         lbTitle = new javax.swing.JLabel();
         lbTitle3 = new javax.swing.JLabel();
-        txpreco = new javax.swing.JTextField();
+        txtpreco = new javax.swing.JTextField();
         btnAdicionarItem = new javax.swing.JButton();
         txtqtd = new javax.swing.JTextField();
         lbValues = new javax.swing.JLabel();
@@ -90,7 +103,12 @@ public class CardSales extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CAIXA");
 
-        btnAdicionarItem1.setText("PAGAMENTO");
+        btnPagamento.setText("PAGAMENTO");
+        btnPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagamentoActionPerformed(evt);
+            }
+        });
 
         btnAdicionarItem2.setText("CANCELAR VENDA");
 
@@ -148,6 +166,11 @@ public class CardSales extends javax.swing.JPanel {
         lbTitle3.setText("Preço:");
 
         btnAdicionarItem.setText("Adicionar Item");
+        btnAdicionarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarItemActionPerformed(evt);
+            }
+        });
 
         lbValues.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         lbValues.setForeground(new java.awt.Color(255, 255, 255));
@@ -190,7 +213,7 @@ public class CardSales extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbTitle3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(txpreco, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtpreco, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(lbTitle7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -233,7 +256,7 @@ public class CardSales extends javax.swing.JPanel {
                 .addGap(134, 134, 134))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdicionarItem1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdicionarItem2)
                 .addGap(154, 154, 154))
@@ -267,7 +290,7 @@ public class CardSales extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTitle3)
-                            .addComponent(txpreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtpreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtqtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbTitle7)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -282,7 +305,7 @@ public class CardSales extends javax.swing.JPanel {
                             .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdicionarItem1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAdicionarItem2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
@@ -313,15 +336,65 @@ public class CardSales extends javax.swing.JPanel {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             product = controllerProduct.controlBuscarProdutoPorID(txtcodigoProduto.getText());
             txtproduto.setText(product.getDescription());
-            txpreco.setText(String.valueOf(product.getPrice()));
+            txtpreco.setText(String.valueOf(product.getPrice()));
+
+            qtd = Integer.parseInt(txtqtd.getText());
+            preco = Double.parseDouble(txtpreco.getText());
+
+            subtotal = qtd * preco;
+
+            total += subtotal;
+            txtValorTotal.setText(String.valueOf(total));
+
+            //Adicionar o produto no carrinho
+            carrinho = (DefaultTableModel) TabelaCarrinhoVendas.getModel();
+
+            carrinho.addRow(new Object[]{
+                txtcodigoProduto.getText(),
+                txtproduto.getText(),
+                txtqtd.getText(),
+                txtpreco.getText(),
+                subtotal
+            });
         }
     }//GEN-LAST:event_txtcodigoProdutoKeyPressed
 
     private void btnPesquisarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarProdutoActionPerformed
         product = controllerProduct.controlBuscarProdutoPorID(txtcodigoProduto.getText());
         txtproduto.setText(product.getDescription());
-        txpreco.setText(String.valueOf(product.getPrice()));
+        txtpreco.setText(String.valueOf(product.getPrice()));
     }//GEN-LAST:event_btnPesquisarProdutoActionPerformed
+
+    private void btnAdicionarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarItemActionPerformed
+        qtd = Integer.parseInt(txtqtd.getText());
+        preco = Double.parseDouble(txtpreco.getText());
+
+        subtotal = qtd * preco;
+
+        total += subtotal;
+        txtValorTotal.setText(String.valueOf(total));
+
+        //Adicionar o produto no carrinho
+        carrinho = (DefaultTableModel) TabelaCarrinhoVendas.getModel();
+
+        carrinho.addRow(new Object[]{
+            txtcodigoProduto.getText(),
+            txtproduto.getText(),
+            txtqtd.getText(),
+            txtpreco.getText(),
+            subtotal
+        });
+
+    }//GEN-LAST:event_btnAdicionarItemActionPerformed
+
+    private void btnPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagamentoActionPerformed
+        FormaPagamento formaPagamento = new FormaPagamento();
+        formaPagamento.cardPagamentos1.txtvltotal.setText(String.valueOf(total));
+        
+        formaPagamento.cardPagamentos1.client_id = client;
+        formaPagamento.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPagamentoActionPerformed
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -339,8 +412,8 @@ public class CardSales extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelaCarrinhoVendas;
     private javax.swing.JButton btnAdicionarItem;
-    private javax.swing.JButton btnAdicionarItem1;
     private javax.swing.JButton btnAdicionarItem2;
+    private javax.swing.JButton btnPagamento;
     private javax.swing.JButton btnPesquisarCliente;
     private javax.swing.JButton btnPesquisarProduto;
     private javax.swing.JLabel jLabel1;
@@ -353,13 +426,17 @@ public class CardSales extends javax.swing.JPanel {
     private javax.swing.JLabel lbTitle6;
     private javax.swing.JLabel lbTitle7;
     private javax.swing.JLabel lbValues;
-    private javax.swing.JTextField txpreco;
     private javax.swing.JTextField txtValorTotal;
     private javax.swing.JTextField txtcodigoProduto;
     private javax.swing.JFormattedTextField txtcpfCliente;
     private javax.swing.JTextField txtdata;
     private javax.swing.JTextField txtnomecliente;
+    private javax.swing.JTextField txtpreco;
     private javax.swing.JTextField txtproduto;
     private javax.swing.JTextField txtqtd;
     // End of variables declaration//GEN-END:variables
+
+    private void dispose() {
+
+    }
 }

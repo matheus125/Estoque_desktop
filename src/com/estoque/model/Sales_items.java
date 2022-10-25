@@ -10,19 +10,22 @@ package com.estoque.model;
  * @author Matheus
  */
 public class Sales_items {
-    
+
     private Sales sales;
     private Product product;
     private int qtdproduct;
+    private Float subtotal;
 
     public Sales_items() {
     }
 
-    public Sales_items(Sales sales, Product product, int qtdproduct) {
+    public Sales_items(Sales sales, Product product, int qtdproduct, Float subtotal) {
         this.sales = sales;
         this.product = product;
         this.qtdproduct = qtdproduct;
+        this.subtotal = subtotal;
     }
+
     /**
      * @return the sales
      */
@@ -63,5 +66,19 @@ public class Sales_items {
      */
     public void setQtdproduct(int qtdproduct) {
         this.qtdproduct = qtdproduct;
+    }
+
+    /**
+     * @return the subtotal
+     */
+    public Float getSubtotal() {
+        return subtotal;
+    }
+
+    /**
+     * @param subtotal the subtotal to set
+     */
+    public void setSubtotal(Float subtotal) {
+        this.subtotal = subtotal;
     }
 }

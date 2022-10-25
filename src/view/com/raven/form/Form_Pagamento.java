@@ -34,6 +34,6 @@ public class Form_Pagamento extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private view.com.raven.component.CardPagamentos cardPagamentos1;
+    public view.com.raven.component.CardPagamentos cardPagamentos1;
     // End of variables declaration//GEN-END:variables
 }

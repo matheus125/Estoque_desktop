@@ -3,24 +3,34 @@ package com.estoque.model;
 public class Sales {
 
     private int id;
-    private User user;
+    private Client client;
     private String sale_date;
-    private Float value;
-    private Float value_total;
-    private double discount;
+    private Double value_total;
     private String type_payment;
 
     public Sales() {
     }
 
-    public Sales(int id, User user, String sale_date, Float value, Float value_total, double discount, String type_payment) {
+    public Sales(int id, Client client, String sale_date, Double value_total, String type_payment) {
         this.id = id;
-        this.user = user;
+        this.client = client;
         this.sale_date = sale_date;
-        this.value = value;
         this.value_total = value_total;
-        this.discount = discount;
         this.type_payment = type_payment;
+    }
+
+    /**
+     * @return the value_total
+     */
+    public Double getValue_total() {
+        return value_total;
+    }
+
+    /**
+     * @param value_total the value_total to set
+     */
+    public void setValue_total(Double value_total) {
+        this.value_total = value_total;
     }
 
     /**
@@ -38,20 +48,6 @@ public class Sales {
     }
 
     /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    /**
      * @return the sale_date
      */
     public String getSale_date() {
@@ -66,48 +62,6 @@ public class Sales {
     }
 
     /**
-     * @return the value
-     */
-    public Float getValue() {
-        return value;
-    }
-
-    /**
-     * @param value the value to set
-     */
-    public void setValue(Float value) {
-        this.value = value;
-    }
-
-    /**
-     * @return the value_total
-     */
-    public Float getValue_total() {
-        return value_total;
-    }
-
-    /**
-     * @param value_total the value_total to set
-     */
-    public void setValue_total(Float value_total) {
-        this.value_total = value_total;
-    }
-
-    /**
-     * @return the discount
-     */
-    public double getDiscount() {
-        return discount;
-    }
-
-    /**
-     * @param discount the discount to set
-     */
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    /**
      * @return the type_payment
      */
     public String getType_payment() {
@@ -119,5 +73,19 @@ public class Sales {
      */
     public void setType_payment(String type_payment) {
         this.type_payment = type_payment;
+    }
+
+    /**
+     * @return the client
+     */
+    public Client getClient() {
+        return client;
+    }
+
+    /**
+     * @param client the client to set
+     */
+    public void setClient(Client client) {
+        this.client = client;
     }
 }

@@ -161,7 +161,7 @@ public class ClientDao extends ConexaoBD {
                 client.setCpf(rs.getString("cpf"));
                 client.setPhone(rs.getString("phone"));
             }
-            
+
             return client;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Não encontrado");
