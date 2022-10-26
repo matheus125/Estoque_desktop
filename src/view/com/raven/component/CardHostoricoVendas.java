@@ -6,11 +6,17 @@
 package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
+import com.estoque.dao.SalesDao;
+import com.estoque.model.Sales;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import view.com.raven.model.Model_Card;
 
 /**
@@ -163,7 +169,29 @@ public class CardHostoricoVendas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        //botao buscar venda por periodo
 
+        //Receber as datas
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+       
+        LocalDate data_inicio = LocalDate.parse(txtDataInicial.getText(), formato);
+        LocalDate data_fim = LocalDate.parse(txtDataFinal.getText(), formato);
+        
+        SalesDao salesDao = new SalesDao();
+        List<Sales> lista = salesDao.listarSalesForPeriod(data_inicio, data_fim);
+        
+        DefaultTableModel defaultTableModel = (DefaultTableModel)TableHistorico.getModel();
+        defaultTableModel.setNumRows(0);
+        
+        for (Sales sales:lista) {
+            defaultTableModel.addRow(new Object[]{
+                sales.getId(),
+                sales.getSale_date(),
+                sales.getClient().getName(),
+                sales.getValue_total(),
+                sales.getType_payment()
+            });
+        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void TableHistoricoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableHistoricoMouseClicked
@@ -171,7 +199,7 @@ public class CardHostoricoVendas extends javax.swing.JPanel {
     }//GEN-LAST:event_TableHistoricoMouseClicked
 
     private void txtDataFinalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDataFinalKeyPressed
-        
+
     }//GEN-LAST:event_txtDataFinalKeyPressed
 
     @Override
