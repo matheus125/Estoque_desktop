@@ -14,12 +14,12 @@ public class Sales_items {
     private Sales sales;
     private Product product;
     private int qtdproduct;
-    private Float subtotal;
+    private Double subtotal;
 
     public Sales_items() {
     }
 
-    public Sales_items(Sales sales, Product product, int qtdproduct, Float subtotal) {
+    public Sales_items(Sales sales, Product product, int qtdproduct, Double subtotal) {
         this.sales = sales;
         this.product = product;
         this.qtdproduct = qtdproduct;
@@ -71,14 +71,14 @@ public class Sales_items {
     /**
      * @return the subtotal
      */
-    public Float getSubtotal() {
+    public Double getSubtotal() {
         return subtotal;
     }
 
     /**
      * @param subtotal the subtotal to set
      */
-    public void setSubtotal(Float subtotal) {
+    public void setSubtotal(Double subtotal) {
         this.subtotal = subtotal;
     }
 }

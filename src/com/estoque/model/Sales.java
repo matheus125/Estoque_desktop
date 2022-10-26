@@ -4,6 +4,7 @@ public class Sales {
 
     private int id;
     private Client client;
+    private User user;
     private String sale_date;
     private Double value_total;
     private String type_payment;
@@ -11,8 +12,9 @@ public class Sales {
     public Sales() {
     }
 
-    public Sales(int id, Client client, String sale_date, Double value_total, String type_payment) {
+    public Sales(int id, User user, Client client, String sale_date, Double value_total, String type_payment) {
         this.id = id;
+        this.user = user;
         this.client = client;
         this.sale_date = sale_date;
         this.value_total = value_total;
@@ -87,5 +89,19 @@ public class Sales {
      */
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 }

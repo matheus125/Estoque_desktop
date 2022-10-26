@@ -1,7 +1,9 @@
 package view.com.raven.component;
 
+import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerClient;
 import com.estoque.controller.ControllerProduct;
+import com.estoque.dao.UserDao;
 import com.estoque.model.Client;
 import com.estoque.model.Product;
 import com.estoque.model.User;
@@ -18,17 +20,21 @@ import javax.swing.table.DefaultTableModel;
 import view.FormaPagamento;
 
 public class CardSales extends javax.swing.JPanel {
+    
+    
 
     ControllerClient controllerClient = new ControllerClient();
     ControllerProduct controllerProduct = new ControllerProduct();
-    
+
     User user = new User();
-    
+
     Client client = new Client();
     Product product = new Product();
 
+    ConexaoBD con = new ConexaoBD();
+
     double total, preco, subtotal;
-    int qtd;
+    int qtd, codUser;
 
     DefaultTableModel carrinho;
 
@@ -63,7 +69,7 @@ public class CardSales extends javax.swing.JPanel {
         txtdata.setText(dataformatada);
 
         txtqtd.setText("1");
-
+        txtidproduct.setVisible(false);
     }
 
     public void setData(Model_Card data) {
@@ -98,6 +104,7 @@ public class CardSales extends javax.swing.JPanel {
         TabelaCarrinhoVendas = new javax.swing.JTable();
         txtcodigoProduto = new javax.swing.JTextField();
         lbTitle7 = new javax.swing.JLabel();
+        txtidproduct = new javax.swing.JTextField();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -187,7 +194,7 @@ public class CardSales extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Código", "Produto", "Qtd", "Preço", "Subtotal"
+                "ID", "Código", "Produto", "Qtd", "Preço", "Subtotal"
             }
         ));
         jScrollPane1.setViewportView(TabelaCarrinhoVendas);
@@ -210,14 +217,6 @@ public class CardSales extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbTitle3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(txtpreco, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(lbTitle7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtqtd, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lbTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -242,7 +241,18 @@ public class CardSales extends javax.swing.JPanel {
                         .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtdata, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPesquisarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnPesquisarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbTitle3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtpreco, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(lbTitle7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtqtd, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtidproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(52, 52, 52)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(38, Short.MAX_VALUE))
@@ -306,7 +316,8 @@ public class CardSales extends javax.swing.JPanel {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdicionarItem2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAdicionarItem2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtidproduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -335,6 +346,7 @@ public class CardSales extends javax.swing.JPanel {
     private void txtcodigoProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcodigoProdutoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             product = controllerProduct.controlBuscarProdutoPorID(txtcodigoProduto.getText());
+            txtidproduct.setText(String.valueOf(product.getId()));
             txtproduto.setText(product.getDescription());
             txtpreco.setText(String.valueOf(product.getPrice()));
 
@@ -350,6 +362,7 @@ public class CardSales extends javax.swing.JPanel {
             carrinho = (DefaultTableModel) TabelaCarrinhoVendas.getModel();
 
             carrinho.addRow(new Object[]{
+                txtidproduct.getText(),
                 txtcodigoProduto.getText(),
                 txtproduto.getText(),
                 txtqtd.getText(),
@@ -361,6 +374,7 @@ public class CardSales extends javax.swing.JPanel {
 
     private void btnPesquisarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarProdutoActionPerformed
         product = controllerProduct.controlBuscarProdutoPorID(txtcodigoProduto.getText());
+        txtidproduct.setText(String.valueOf(product.getId()));
         txtproduto.setText(product.getDescription());
         txtpreco.setText(String.valueOf(product.getPrice()));
     }//GEN-LAST:event_btnPesquisarProdutoActionPerformed
@@ -378,6 +392,7 @@ public class CardSales extends javax.swing.JPanel {
         carrinho = (DefaultTableModel) TabelaCarrinhoVendas.getModel();
 
         carrinho.addRow(new Object[]{
+            txtidproduct.getText(),
             txtcodigoProduto.getText(),
             txtproduto.getText(),
             txtqtd.getText(),
@@ -390,9 +405,9 @@ public class CardSales extends javax.swing.JPanel {
     private void btnPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagamentoActionPerformed
         FormaPagamento formaPagamento = new FormaPagamento();
         formaPagamento.cardPagamentos1.txtvltotal.setText(String.valueOf(total));
-        
         formaPagamento.cardPagamentos1.client_id = client;
         formaPagamento.setVisible(true);
+        formaPagamento.cardPagamentos1.carrinho = carrinho;
         this.dispose();
     }//GEN-LAST:event_btnPagamentoActionPerformed
 
@@ -430,6 +445,7 @@ public class CardSales extends javax.swing.JPanel {
     private javax.swing.JTextField txtcodigoProduto;
     private javax.swing.JFormattedTextField txtcpfCliente;
     private javax.swing.JTextField txtdata;
+    private javax.swing.JTextField txtidproduct;
     private javax.swing.JTextField txtnomecliente;
     private javax.swing.JTextField txtpreco;
     private javax.swing.JTextField txtproduto;

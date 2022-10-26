@@ -40,7 +40,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     }
 
-    private void salvarUserLogs() {
+    public void salvarUserLogs() {
         con.getConectar();
         try {
             con.executarSql("select*from tb_user where login='" + txtLogin.getText() + "'");

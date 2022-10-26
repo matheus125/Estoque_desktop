@@ -119,4 +119,41 @@ public class ProductDao extends ConexaoBD {
         return null;
     }
 
+    // Metodo para da baixa no estoque
+    public void baixarEstoque(int id, int qtd_nova) {
+        this.getConectar();
+        try {
+            String sql = "update tb_product set qtdproduct = ? where id =?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, qtd_nova);
+            stmt.setInt(2, id);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro:" + e);
+        }
+    }
+
+    //Metodo que retorna o estoque atual de um produto
+    public int retornarEstoqueAtual(int id) {
+        this.getConectar();
+        try {
+            int qtdproduct = 0;
+
+            String sql = "select qtdproduct from tb_product where id = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                qtdproduct = (rs.getInt("qtdproduct"));
+            }
+            return qtdproduct;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

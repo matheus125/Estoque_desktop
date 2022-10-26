@@ -1,9 +1,13 @@
 package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
+import com.estoque.dao.ProductDao;
 import com.estoque.dao.SalesDao;
+import com.estoque.dao.Sales_ItemsDao;
 import com.estoque.model.Client;
+import com.estoque.model.Product;
 import com.estoque.model.Sales;
+import com.estoque.model.Sales_items;
 import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
@@ -11,17 +15,23 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class CardPagamentos extends javax.swing.JPanel {
 
     ConexaoBD con = new ConexaoBD();
-
+    User user = new User();
     Client client_id = new Client();
     Sales sales = new Sales();
     SalesDao salesDao = new SalesDao();
-    
+    DefaultTableModel carrinho;
+
+    int user_id;
+
     public Color getColor1() {
         return color1;
     }
@@ -43,6 +53,8 @@ public class CardPagamentos extends javax.swing.JPanel {
 
     public CardPagamentos() {
         initComponents();
+        con.getConectar();
+        buscarUserID();
         setOpaque(false);
         color1 = Color.BLACK;
         color2 = Color.WHITE;
@@ -57,6 +69,18 @@ public class CardPagamentos extends javax.swing.JPanel {
         lbTitle.setText(data.getTitle());
         lbValues.setText(data.getValues());
         lbDescription.setText(data.getDescription());*/
+    }
+
+    public void buscarUserID() {
+        con.getConectar();
+
+        try {
+            con.executarSql("select * from tb_userslogs order by id_user desc limit 1;");
+            con.getResultSet().first();
+            user_id = con.getResultSet().getInt("id_user");
+        } catch (NumberFormatException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro na Consulta /nErro!" + e);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -177,31 +201,61 @@ public class CardPagamentos extends javax.swing.JPanel {
         pcartao = Double.parseDouble(txtcartão.getText());
         ppix = Double.parseDouble(txtpix.getText());
         pdinheiro = Double.parseDouble(txtdinheiro.getText());
-
         totalvenda = Double.parseDouble(txtvltotal.getText());
         // Calcular o total e troco
         totalpago = pcartao + ppix + pdinheiro;
         // Calcular do troco
         troco = totalpago - totalvenda;
         txttrocofinal.setText(String.valueOf(troco));
-        
         //Dados do cliente e usuario (client_id, user_id)
-       
+        User users = new User();
+        users.setId(user_id);
         sales.setClient(client_id);
-        
+        sales.setUser(users);
         //Pegar a data da venda
         Date data = new Date();
         SimpleDateFormat dataEUA = new SimpleDateFormat("yyyy-MM-dd");
         String dataformatada = dataEUA.format(data);
-        
         sales.setSale_date(dataformatada);
         //Total da venda
         sales.setValue_total(totalvenda);
-        
         //Tipo pagamento
         sales.setType_payment(txtdinheiro.getText());
-        
         salesDao.cadastrarVenda(sales);
+
+        //Retorna o id da ultima venda realizada
+        sales.setId(salesDao.retornarUltimaVenda());
+        //System.out.println("ID da ultima venda:" +sales.getId());
+        //Cadastrando os produtos na tabela itemvendas
+        for (int i = 0; i < carrinho.getRowCount(); i++) {
+
+            int qtd_estoque, qtd_comprada, qtd_atualizada;
+            Product product = new Product();
+            ProductDao productDao = new ProductDao();
+
+            Sales_items sales_items = new Sales_items();
+
+            sales_items.setSales(sales);
+            product.setId(Integer.parseInt(carrinho.getValueAt(i, 0).toString()));
+            sales_items.setProduct(product);
+            sales_items.setQtdproduct(Integer.parseInt(carrinho.getValueAt(i, 3).toString()));
+            sales_items.setSubtotal(Double.parseDouble(carrinho.getValueAt(i, 5).toString()));
+
+            //Baixa no estoque
+            qtd_estoque = productDao.retornarEstoqueAtual(product.getId());
+            qtd_comprada = Integer.parseInt(carrinho.getValueAt(i, 3).toString());
+            qtd_atualizada = qtd_estoque - qtd_comprada;
+            
+            productDao.baixarEstoque(product.getId(), qtd_atualizada);
+            
+            Sales_ItemsDao sales_ItemsDao = new Sales_ItemsDao();
+            sales_ItemsDao.cadastrarItem(sales_items);
+        }
+        /**
+         * **********************************************
+         */
+        JOptionPane.showMessageDialog(null, "Venda Registrada com Sucesso!");
+
     }//GEN-LAST:event_btnFinalizarVendaActionPerformed
 
     @Override

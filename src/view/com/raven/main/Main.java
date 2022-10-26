@@ -22,6 +22,7 @@ import view.com.raven.form.Form_Funcionarios;
 import view.com.raven.form.Form_Providers;
 import view.com.raven.component.Menu;
 import view.com.raven.form.Form_Pagamento;
+import view.com.raven.form.Form_Historico;
 
 /**
  *
@@ -35,6 +36,7 @@ public class Main extends javax.swing.JFrame {
     private Form_Vendas formVendas;
     private Form_Providers formProviders;
     private Form_Pagamento formPagamento;
+    private Form_Historico form_Historico;
     int codUser;
 
     public String usuário;
@@ -51,6 +53,7 @@ public class Main extends javax.swing.JFrame {
         formVendas = new Form_Vendas();
         formProviders = new Form_Providers();
         formPagamento = new Form_Pagamento();
+        form_Historico = new Form_Historico();
         menu1.initMoving(Main.this);
 
         menu1.addEventMenuSelected(new EventMenuSelected() {
@@ -70,7 +73,7 @@ public class Main extends javax.swing.JFrame {
                         setForm(formFuncionarios);
                         break;
                     case 4:
-                        setForm(formPagamento);
+                        setForm(form_Historico);
                         break;
                     case 8:
                         setForm(home);
