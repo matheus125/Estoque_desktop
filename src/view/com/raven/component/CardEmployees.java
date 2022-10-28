@@ -226,6 +226,11 @@ public class CardEmployees extends javax.swing.JPanel {
         });
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         TableUserEmployees.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -386,8 +391,12 @@ public class CardEmployees extends javax.swing.JPanel {
         habilitarBotao();
         btnNovo.setEnabled(false);
         btnAlterar.setEnabled(false);
-        
+
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     @Override
     protected void paintComponent(Graphics grphcs) {

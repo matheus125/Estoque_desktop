@@ -13,21 +13,24 @@ public class ConexaoBD {
     public Connection con = null;
     private Statement statement;
     private ResultSet resultSet;
+
     /**
      * Variavel para login com banco
      */
-    /*private final String url = "jdbc:mysql://162.241.3.6/lookpe17_erp";
+    private final String url = "jdbc:mysql://162.241.3.6/lookpe17_erp";
     private final String user = "lookpe17_erp";
     private final String pass = "mmota13192921";
-    private final String driver = "com.mysql.cj.jdbc.Driver";*/
+    private final String driver = "com.mysql.cj.jdbc.Driver";
+
+      /*
     private final String url = "jdbc:mysql://localhost/estoque";
     private final String user = "root";
     private final String pass = "root123";
     private final String driver = "com.mysql.cj.jdbc.Driver";
-    
+     */
     /**
-     * metodo para conectar com o banco de dados
-     *d
+     * metodo para conectar com o banco de dados d
+     *
      * @return
      */
     public boolean getConectar() {
@@ -104,7 +107,7 @@ public class ConexaoBD {
     public boolean executarUpdateSQL(String sql) {
         try {
             this.statement = con.createStatement(
-            ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             this.statement.executeUpdate(sql);
             return true;
 
@@ -150,7 +153,7 @@ public class ConexaoBD {
                 this.getResultSet().close();
                 this.statement.close();
             }
-            System.out.println("Conexão desligada com sucesso!!");
+            //System.out.println("Conexão desligada com sucesso!!");
             this.getCon().close();
             return true;
         } catch (SQLException erro) {

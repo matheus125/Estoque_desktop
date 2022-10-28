@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
 import com.estoque.model.Employees;
 import com.estoque.model.User;
-
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -57,7 +50,6 @@ public class EmployeesDao extends ConexaoBD {
                 employees.setEmployees_name(this.getResultSet().getString(2));
                 employees.setEmployees_function(this.getResultSet().getString(3));
                 
-                
                 user.setLogin(this.getResultSet().getString(4));
                 user.setPassword(this.getResultSet().getString(5));
                 user.setProfile(this.getResultSet().getString(6));
@@ -95,6 +87,4 @@ public class EmployeesDao extends ConexaoBD {
         }
 
     }
-     
-     
 }

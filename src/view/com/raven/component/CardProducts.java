@@ -19,15 +19,15 @@ import javax.swing.table.DefaultTableModel;
 
 public class CardProducts extends javax.swing.JPanel {
 
-    int id_category, id_product, flag = 0;
+    int id_product, flag = 0;
 
     ConexaoBD con = new ConexaoBD();
 
     ControllerProduct controllerProduct = new ControllerProduct();
-   
+
     Product product = new Product();
     Providers providers = new Providers();
-    
+
     ArrayList<Product> listProduct = new ArrayList<>();
 
     public Color getColor1() {
@@ -51,12 +51,13 @@ public class CardProducts extends javax.swing.JPanel {
 
     public CardProducts() {
         initComponents();
+        con.getConectar();
         setOpaque(false);
         color1 = Color.BLACK;
         color2 = Color.WHITE;
         desabilitarCampos();
         desabilitarBotao();
-        //loadProductTable();
+        loadProductTable();
     }
 
     public void limparCampos() {
@@ -118,15 +119,11 @@ public class CardProducts extends javax.swing.JPanel {
         product.setBar_code(this.bar_code.getText());
         product.setPrice(Float.parseFloat(this.price.getText()));
         product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
-        
-        Providers providers = new Providers();
-        providers = (Providers)combomfornecedores.getSelectedItem();
-        product.setProviders(providers);
-        
-        boolean resultado = controllerProduct.controlSaveProduct(providers,product);
+
+        boolean resultado = controllerProduct.controlSaveProduct(product);
         if (resultado == true) {
             JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
-            //loadProductTable();
+            loadProductTable();
             limparCampos();
             desabilitarCampos();
             desabilitarBotao();
@@ -135,29 +132,45 @@ public class CardProducts extends javax.swing.JPanel {
     }
 
     public void updateProduct() {
-       
-        product.setCategory(this.category_name.getText());
-        
+
         product.setId(this.id_product);
-        product.setType(this.type.getText());
         product.setBrand(this.brand.getText());
         product.setType(this.type.getText());
-        product.setBrand(this.brand.getText());
+        product.setCategory(this.category_name.getText());
         product.setSize(this.size.getText());
         product.setDescription(this.description.getText());
         product.setBar_code(this.bar_code.getText());
         product.setPrice(Float.parseFloat(this.price.getText()));
         product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
-        
+
         boolean resultado = controllerProduct.controlUpdateProduct(product);
         if (resultado == true) {
             JOptionPane.showMessageDialog(this, "Alterado com sucesso!!");
-            //loadProductTable();
+            loadProductTable();
             limparCampos();
             desabilitarCampos();
             desabilitarBotao();
         }
+    }
 
+    public void excluirProduct() {
+        desabilitarCampos();
+        int linha = tableProduct.getSelectedRow();
+        String tNome = (String) tableProduct.getValueAt(linha, 7);
+        int codigo = (int) tableProduct.getValueAt(linha, 0);
+        int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir o Produto: \n"
+                + tNome + "?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (opcao == JOptionPane.OK_OPTION) {
+            boolean resultado = controllerProduct.controlDeleteCliente(codigo);
+            if (resultado == true) {
+                JOptionPane.showMessageDialog(this, "Produto Excluido com sucesso!");
+                loadProductTable();
+                limparCampos();
+                desabilitarCampos();
+                desabilitarBotao();
+                btnNovo.setEnabled(true);
+            }
+        }
     }
 
     public void setData(Model_Card data) {
@@ -196,7 +209,6 @@ public class CardProducts extends javax.swing.JPanel {
         type = new javax.swing.JTextField();
         btnAlterar = new javax.swing.JButton();
         brand = new javax.swing.JTextField();
-        combomfornecedores = new javax.swing.JComboBox();
 
         btnRemover.setText("Remover");
         btnRemover.addActionListener(new java.awt.event.ActionListener() {
@@ -248,7 +260,7 @@ public class CardProducts extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Categoria", "Tipo", "Brand", "Size", "Description", "Bar_code", "Price", "Quantidade"
+                "ID", "Cor", "Categoria", "Marca", "Tamanho", "Codigo_Barras", "Preço", "Descrição", "Quantidade"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -284,7 +296,7 @@ public class CardProducts extends javax.swing.JPanel {
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Tipo:");
+        jLabel2.setText("Cor:");
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -304,17 +316,6 @@ public class CardProducts extends javax.swing.JPanel {
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlterarActionPerformed(evt);
-            }
-        });
-
-        combomfornecedores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
-        combomfornecedores.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                combomfornecedoresAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
 
@@ -350,13 +351,11 @@ public class CardProducts extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
-                                .addComponent(bar_code, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
+                                .addComponent(bar_code))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(brand, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                    .addComponent(combomfornecedores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(brand, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -416,19 +415,17 @@ public class CardProducts extends javax.swing.JPanel {
                     .addComponent(size, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(combomfornecedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnNovo)
                     .addComponent(btnAlterar)
                     .addComponent(btnRemover)
                     .addComponent(btnCancelar))
-                .addGap(18, 19, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(search_product, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(56, Short.MAX_VALUE))
@@ -436,7 +433,7 @@ public class CardProducts extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        // TODO add your handling code here:
+        excluirProduct();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -446,7 +443,11 @@ public class CardProducts extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        saveProduct();
+        if (flag == 1) {
+            saveProduct();
+        } else {
+            updateProduct();
+        };
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void category_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_nameActionPerformed
@@ -454,27 +455,33 @@ public class CardProducts extends javax.swing.JPanel {
     }//GEN-LAST:event_category_nameActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        habilitarBotao();
+        flag = 1;
         habilitarCampos();
+        habilitarBotao();
+        btnNovo.setEnabled(false);
+        btnAlterar.setEnabled(false);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        updateProduct();
+        flag = 2;
+        habilitarCampos();
+        habilitarBotao();
+        btnNovo.setEnabled(false);
+        btnAlterar.setEnabled(false);
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         limparCampos();
+        btnAlterar.setEnabled(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void search_productActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_productActionPerformed
-
+        con.getConectar();
+        btnAlterar.setEnabled(true);
+        String search_product = ("select id, type, category_name, brand, size, description, bar_code, price, qtdproduct\n"
+                + "		from tb_product where bar_code like '%" + this.search_product.getText() + "%'");
+        con.executarSql(search_product);
         try {
-
-            String search_product = ("select c.category_name, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.qtdproduct from "
-                    + "tb_category c inner join tb_product p on c.id = p.id_category "
-                    + "inner join tb_inventory i on p.id = i.id_product where bar_code like '" + this.search_product.getText() + "%'");
-            con.executarSql(search_product);
-
             if (con.getResultSet().first()) {
                 bar_code.setText(con.getResultSet().getString("bar_code"));
                 description.setText(con.getResultSet().getString("description"));
@@ -484,6 +491,7 @@ public class CardProducts extends javax.swing.JPanel {
                 type.setText(con.getResultSet().getString("type"));
                 size.setText(con.getResultSet().getString("size"));
                 price.setText(con.getResultSet().getString("price"));
+                btnAlterar.setEnabled(true);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
@@ -491,38 +499,28 @@ public class CardProducts extends javax.swing.JPanel {
     }//GEN-LAST:event_search_productActionPerformed
 
     private void tableProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductMouseClicked
-        String nome = "" + tableProduct.getValueAt(tableProduct.getSelectedRow(), 1);
+        btnAlterar.setEnabled(true);
+        btnRemover.setEnabled(true);
+        String nome = "" + tableProduct.getValueAt(tableProduct.getSelectedRow(), 5);
         con.getConectar();
-        con.executarSql("select c.category_name, p.id_category, p.type, p.brand, p.size, p.description, p.bar_code, p.price, i.id_product,i.qtdproduct from "
-                + "tb_category c inner join tb_product p on c.id = p.id_category "
-                + "inner join tb_inventory i on p.id = i.id_product where category_name ='" + nome + "'");
+        con.executarSql("select id, type, category_name, brand, size, description, bar_code, price, qtdproduct from tb_product where bar_code = '" + nome + "'");
         try {
             con.getResultSet().first();
-            id_category = Integer.parseInt(con.getResultSet().getString("id_category"));
-            id_product = Integer.parseInt(con.getResultSet().getString("id_product"));
-            bar_code.setText(con.getResultSet().getString("bar_code"));
-            description.setText(con.getResultSet().getString("description"));
+            id_product = Integer.parseInt(con.getResultSet().getString("id"));
+            type.setText(con.getResultSet().getString("type"));
             category_name.setText(con.getResultSet().getString("category_name"));
             brand.setText(con.getResultSet().getString("brand"));
-            type.setText(con.getResultSet().getString("type"));
             size.setText(con.getResultSet().getString("size"));
+            description.setText(con.getResultSet().getString("description"));
+            bar_code.setText(con.getResultSet().getString("bar_code"));
             price.setText(con.getResultSet().getString("price"));
             qtdproduct.setText(con.getResultSet().getString("qtdproduct"));
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
         }
+        con.getfecharConexao();
     }//GEN-LAST:event_tableProductMouseClicked
-
-    private void combomfornecedoresAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_combomfornecedoresAncestorAdded
-        ProvidersDao providersDao = new ProvidersDao();
-        List<Providers> listProviders = providersDao.daoListProviders();
-        combomfornecedores.removeAll();
-        
-        for (Providers providers:listProviders) {
-            combomfornecedores.addItem(providers);
-        }
-    }//GEN-LAST:event_combomfornecedoresAncestorAdded
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -537,7 +535,7 @@ public class CardProducts extends javax.swing.JPanel {
         super.paintComponent(grphcs);
     }
 
-   /* public void loadProductTable() {
+    public void loadProductTable() {
         listProduct = controllerProduct.returnListProductController();
         DefaultTableModel table = (DefaultTableModel) tableProduct.getModel();
         table.setNumRows(0);
@@ -545,18 +543,18 @@ public class CardProducts extends javax.swing.JPanel {
         int cont = listProduct.size();
         for (int i = 0; i < cont; i++) {
             table.addRow(new Object[]{
-                listProduct.get(i).getProduct().getCategory().getId(),
-                listProduct.get(i).getProduct().getCategory().getCategory_name(),
-                listProduct.get(i).getProduct().getType(),
-                listProduct.get(i).getProduct().getBrand(),
-                listProduct.get(i).getProduct().getSize(),
-                listProduct.get(i).getProduct().getBar_code(),
-                listProduct.get(i).getProduct().getPrice(),
-                listProduct.get(i).getProduct().getDescription(),
-                listProduct.get(i).getQtdproduct()
+                listProduct.get(i).getId(),
+                listProduct.get(i).getCategory(),
+                listProduct.get(i).getType(),
+                listProduct.get(i).getBrand(),
+                listProduct.get(i).getSize(),
+                listProduct.get(i).getBar_code(),
+                listProduct.get(i).getPrice(),
+                listProduct.get(i).getDescription(),
+                listProduct.get(i).getQtd()
             });
         }
-    }*/
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField bar_code;
@@ -567,7 +565,6 @@ public class CardProducts extends javax.swing.JPanel {
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JTextField category_name;
-    private javax.swing.JComboBox combomfornecedores;
     private javax.swing.JLabel descricao;
     private javax.swing.JTextField description;
     private javax.swing.JButton jButton1;

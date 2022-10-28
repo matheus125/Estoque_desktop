@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 public class ProductDao extends ConexaoBD {
 
-    public boolean daoSalveProduct(Providers providers, Product product) {
+    public boolean daoSalveProduct(Product product) {
 
         String SaveProduct = "call sp_save_product ("
                 + "'" + product.getType() + "',"
@@ -21,8 +21,7 @@ public class ProductDao extends ConexaoBD {
                 + "'" + product.getDescription() + "',"
                 + "'" + product.getBar_code() + "',"
                 + "'" + product.getPrice() + "',"
-                + "'" + product.getQtd() + "',"
-                + "'" + product.getProviders().getId() + "'"
+                + "'" + product.getQtd() + "'"
                 + ")";
         try {
             this.getConectar();
@@ -36,26 +35,26 @@ public class ProductDao extends ConexaoBD {
         }
     }
 
-    /*  public ArrayList<Product> daoListProduct() {
+    public ArrayList<Product> daoListProduct() {
         ArrayList<Product> listProducts = new ArrayList<>();
 
         Product product = new Product();
 
         try {
             this.getConectar();
-            this.executarSql("call sp_list_products");
+            this.executarSql("SELECT * FROM tb_product");
             while (this.getResultSet().next()) {
 
                 product = new Product();
-
-                product.setType(this.getResultSet().getString(1));
+                product.setId(this.getResultSet().getInt(1));
                 product.setCategory(this.getResultSet().getString(2));
-                product.setBrand(this.getResultSet().getString(3));
-                product.setSize(this.getResultSet().getString(4));
-                product.setDescription(this.getResultSet().getString(5));
-                product.setBar_code(this.getResultSet().getString(6));
-                product.setPrice(this.getResultSet().getFloat(7));
-                product.setQtd(this.getResultSet().getInt(8));
+                product.setType(this.getResultSet().getString(3));
+                product.setBrand(this.getResultSet().getString(4));
+                product.setSize(this.getResultSet().getString(5));
+                product.setDescription(this.getResultSet().getString(6));
+                product.setBar_code(this.getResultSet().getString(7));
+                product.setPrice(this.getResultSet().getFloat(8));
+                product.setQtd(this.getResultSet().getInt(9));
                 listProducts.add(product);
             }
         } catch (SQLException e) {
@@ -64,10 +63,12 @@ public class ProductDao extends ConexaoBD {
             this.getfecharConexao();
         }
         return listProducts;
-    }*/
+    }
+
     public boolean daoUpdateProduct(Product product) {
 
         String UpdateProduct = "call sp_update_product ("
+                + "'" + product.getId() + "',"
                 + "'" + product.getType() + "',"
                 + "'" + product.getCategory() + "',"
                 + "'" + product.getBrand() + "',"
@@ -92,8 +93,8 @@ public class ProductDao extends ConexaoBD {
     public Product buscarCodigoBarra(String Codigo) {
         this.getConectar();
         try {
-            String sql = "select p.id, p.type, p.category_name, p.brand, p.size, p.description, p.bar_code, p.price, p.qtdproduct\n"
-                    + " from tb_product as p inner join tb_providers as pr on (p.id_providers = pr.id) where p.bar_code = ?";
+            String sql = "select id, type, category_name, brand, size, description, bar_code, price, qtdproduct\n"
+                    + " from tb_product  where bar_code = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, Codigo);
 
@@ -154,6 +155,20 @@ public class ProductDao extends ConexaoBD {
             return qtdproduct;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public boolean daoDeleteCliente(int codigo) {
+        String comandoDelete = "call sp_delete_product(" + codigo + ");";
+        try {
+            this.getConectar();
+            this.executarSql(comandoDelete);
+            return true;
+        } catch (Exception erro) {
+            System.out.println("Erro: " + erro.getMessage());
+            return false;
+        } finally {
+            this.getfecharConexao();
         }
     }
 }

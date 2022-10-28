@@ -11,12 +11,11 @@ public class Product {
     private String bar_code;
     private Float price;
     private int qtd; 
-    private Providers providers;
 
     public Product() {
     }
 
-    public Product(int id, String category, String type, String brand, String size, String description, String bar_code, Float price, int qtd, Providers providers) {
+    public Product(int id, String category, String type, String brand, String size, String description, String bar_code, Float price, int qtd) {
         this.id = id;
         this.category = category;
         this.type = type;
@@ -26,7 +25,6 @@ public class Product {
         this.bar_code = bar_code;
         this.price = price;
         this.qtd = qtd;
-        this.providers = providers;
     }
 
     
@@ -143,19 +141,7 @@ public class Product {
         this.price = price;
     }
 
-    /**
-     * @return the providers
-     */
-    public Providers getProviders() {
-        return providers;
-    }
-
-    /**
-     * @param providers the providers to set
-     */
-    public void setProviders(Providers providers) {
-        this.providers = providers;
-    }
+ 
 
     /**
      * @return the qtd

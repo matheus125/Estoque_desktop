@@ -9,17 +9,22 @@ public class ControllerProduct {
 
     ProductDao productDao = new ProductDao();
 
-    public boolean controlSaveProduct(Providers providers, Product product) {
-        return this.productDao.daoSalveProduct(providers, product);
+    public boolean controlSaveProduct(Product product) {
+        return this.productDao.daoSalveProduct(product);
     }
 
     public boolean controlUpdateProduct(Product product) {
         return this.productDao.daoUpdateProduct(product);
     }
 
-    /*public ArrayList<Product> returnListProductController() {
+    public ArrayList<Product> returnListProductController() {
         return this.productDao.daoListProduct();
-    }*/
+    }
+    //delete cliente
+    public boolean controlDeleteCliente(int codigo){
+        return this.productDao.daoDeleteCliente(codigo);
+    }
+    
     public Product controlBuscarProdutoPorID(String Codigo) {
         return this.productDao.buscarCodigoBarra(Codigo);
     }
