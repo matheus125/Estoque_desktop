@@ -30,19 +30,18 @@ public class Menu extends javax.swing.JPanel {
 
     private void init() {
         listMenu1.addItem(new Model_Menu("1", "Dashboard", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("4", "Fornecedores", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("4", "Funcionarios", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("221", "Produtos", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("3", "Funcionarios", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("5", "Caixa", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("5", "Gerar Códigos de Barra", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
 
         listMenu1.addItem(new Model_Menu("", "Vendas", Model_Menu.MenuType.TITLE));
-        listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("6", "Caixa", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("7", "Sample Page", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("7", "Relatório de Vendas", Model_Menu.MenuType.MENU));
+       /*listMenu1.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("8", "Extra", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("9", "More", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("10", "Logout", Model_Menu.MenuType.MENU));
+        listMenu1.addItem(new Model_Menu("10", "Logout", Model_Menu.MenuType.MENU));*/
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
     }
 

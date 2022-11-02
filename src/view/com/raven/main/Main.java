@@ -11,7 +11,6 @@ import view.com.raven.form.Form_Home;
 import view.com.raven.form.Form_Product;
 import view.com.raven.form.Form_Vendas;
 import java.awt.Color;
-import static java.awt.SystemColor.menu;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JComponent;
@@ -19,9 +18,8 @@ import javax.swing.JOptionPane;
 import view.com.raven.event.EventMenuSelected;
 import java.sql.Timestamp;
 import view.com.raven.form.Form_Funcionarios;
-import view.com.raven.form.Form_Providers;
-import view.com.raven.component.Menu;
 import view.com.raven.form.Form_Pagamento;
+import view.com.raven.form.Form_CodigoBarras;
 import view.com.raven.form.Form_Historico;
 
 /**
@@ -31,12 +29,12 @@ import view.com.raven.form.Form_Historico;
 public class Main extends javax.swing.JFrame {
 
     private Form_Home home;
-    private Form_Product formProduct;
+    private final Form_Product formProduct;
     private Form_Funcionarios formFuncionarios;
     private Form_Vendas formVendas;
-    private Form_Providers formProviders;
-    private Form_Pagamento formPagamento;
+    private final Form_Pagamento formPagamento;
     private Form_Historico form_Historico;
+    private Form_CodigoBarras form_CodigoBarras;
     int codUser;
 
     public String usuário;
@@ -51,9 +49,9 @@ public class Main extends javax.swing.JFrame {
         formProduct = new Form_Product();
         formFuncionarios = new Form_Funcionarios();
         formVendas = new Form_Vendas();
-        formProviders = new Form_Providers();
         formPagamento = new Form_Pagamento();
         form_Historico = new Form_Historico();
+        form_CodigoBarras = new Form_CodigoBarras();
         menu1.initMoving(Main.this);
 
         menu1.addEventMenuSelected(new EventMenuSelected() {
@@ -61,18 +59,21 @@ public class Main extends javax.swing.JFrame {
             public void selected(int index) {
                 switch (index) {
                     case 0:
-                        setForm(formVendas);
+                        setForm(home);
                         break;
                     case 1:
-                        setForm(formProviders);
+                        setForm(formFuncionarios);
                         break;
                     case 2:
                         CheckLogin();
                         break;
                     case 3:
-                        setForm(formFuncionarios);
+                        setForm(form_CodigoBarras);
                         break;
-                    case 4:
+                    case 5:
+                        setForm(formVendas);
+                        break;
+                    case 6:
                         setForm(form_Historico);
                         break;
                     case 8:
@@ -90,15 +91,15 @@ public class Main extends javax.swing.JFrame {
 
     private void CheckLogin() {
         try {
-            Form_Product formProduct = new Form_Product();
+            Form_Product FormularioProdutos = new Form_Product();
             con.executarSql("select*from tb_user where login='" + lbusuarios.getText() + "'");
             con.getResultSet().first();
             if (con.getResultSet().getString("access_level").equals("Administrador")) {
-                if (formProduct == formProduct) {
-                    setForm(formProduct);
-                    formProduct.setVisible(true);
+                if (FormularioProdutos == FormularioProdutos) {
+                    setForm(FormularioProdutos);
+                    FormularioProdutos.setVisible(true);
                 } else {
-                    formProduct.setVisible(true);
+                    FormularioProdutos.setVisible(true);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Você não tem Acesso a essa Funcionalidade!\n Contate o Administrador do Sistema!");
