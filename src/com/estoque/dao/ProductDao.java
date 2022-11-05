@@ -53,7 +53,7 @@ public class ProductDao extends ConexaoBD {
                 product.setSize(this.getResultSet().getString(5));
                 product.setDescription(this.getResultSet().getString(6));
                 product.setBar_code(this.getResultSet().getString(7));
-                product.setPrice(this.getResultSet().getFloat(8));
+                product.setPrice(this.getResultSet().getString(8));
                 product.setQtd(this.getResultSet().getInt(9));
                 listProducts.add(product);
             }
@@ -109,7 +109,7 @@ public class ProductDao extends ConexaoBD {
                 product.setSize(rs.getString("size"));
                 product.setDescription(rs.getString("description"));
                 product.setBar_code(rs.getString("bar_code"));
-                product.setPrice(rs.getFloat("price"));
+                product.setPrice(rs.getString("price"));
                 product.setQtd(rs.getInt("qtdproduct"));
             }
 

@@ -70,10 +70,10 @@ public class Main extends javax.swing.JFrame {
                     case 3:
                         setForm(form_CodigoBarras);
                         break;
-                    case 5:
+                    case 6:
                         setForm(formVendas);
                         break;
-                    case 6:
+                    case 7:
                         setForm(form_Historico);
                         break;
                     case 8:

@@ -9,13 +9,13 @@ public class Product {
     private String size;
     private String description;
     private String bar_code;
-    private Float price;
-    private int qtd; 
+    private String price;
+    private int qtd;
 
     public Product() {
     }
 
-    public Product(int id, String category, String type, String brand, String size, String description, String bar_code, Float price, int qtd) {
+    public Product(int id, String category, String type, String brand, String size, String description, String bar_code, String price, int qtd) {
         this.id = id;
         this.category = category;
         this.type = type;
@@ -26,8 +26,6 @@ public class Product {
         this.price = price;
         this.qtd = qtd;
     }
-
-    
 
     /**
      * @return the id
@@ -128,22 +126,6 @@ public class Product {
     }
 
     /**
-     * @return the price
-     */
-    public Float getPrice() {
-        return price;
-    }
-
-    /**
-     * @param price the price to set
-     */
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
- 
-
-    /**
      * @return the qtd
      */
     public int getQtd() {
@@ -155,5 +137,19 @@ public class Product {
      */
     public void setQtd(int qtd) {
         this.qtd = qtd;
+    }
+
+    /**
+     * @return the price
+     */
+    public String getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

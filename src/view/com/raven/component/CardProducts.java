@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.HeadlessException;
 import java.awt.RenderingHints;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -111,46 +112,60 @@ public class CardProducts extends javax.swing.JPanel {
     }
 
     public void saveProduct() {
-        product.setType(this.type.getText());
-        product.setCategory(this.category_name.getText());
-        product.setBrand(this.brand.getText());
-        product.setSize(this.size.getText());
-        product.setDescription(this.description.getText());
-        product.setBar_code(this.bar_code.getText());
-        product.setPrice(Float.parseFloat(this.price.getText()));
-        product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
+        try {
+            product.setType(this.type.getText());
+            product.setCategory(this.category_name.getText());
+            product.setBrand(this.brand.getText());
+            product.setSize(this.size.getText());
+            product.setDescription(this.description.getText());
+            product.setBar_code(this.bar_code.getText());
+            product.setPrice(this.price.getText());
+            product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
 
-        boolean resultado = controllerProduct.controlSaveProduct(product);
-        if (resultado == true) {
-            JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
-            loadProductTable();
-            limparCampos();
-            desabilitarCampos();
-            desabilitarBotao();
+            boolean resultado = controllerProduct.controlSaveProduct(product);
+            if (resultado == true) {
+                JOptionPane.showMessageDialog(this, "Salvo com sucesso!!");
+                loadProductTable();
+                limparCampos();
+                desabilitarCampos();
+                desabilitarBotao();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao Salvar!!");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao Salvar: "
+                    + "Informe apenas números no campo 'Quantidade'");
         }
 
     }
 
     public void updateProduct() {
+        try {
+            product.setId(this.id_product);
+            product.setBrand(this.brand.getText());
+            product.setType(this.type.getText());
+            product.setCategory(this.category_name.getText());
+            product.setSize(this.size.getText());
+            product.setDescription(this.description.getText());
+            product.setBar_code(this.bar_code.getText());
+            product.setPrice(this.price.getText());
+            product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
 
-        product.setId(this.id_product);
-        product.setBrand(this.brand.getText());
-        product.setType(this.type.getText());
-        product.setCategory(this.category_name.getText());
-        product.setSize(this.size.getText());
-        product.setDescription(this.description.getText());
-        product.setBar_code(this.bar_code.getText());
-        product.setPrice(Float.parseFloat(this.price.getText()));
-        product.setQtd(Integer.parseInt(this.qtdproduct.getText()));
-
-        boolean resultado = controllerProduct.controlUpdateProduct(product);
-        if (resultado == true) {
-            JOptionPane.showMessageDialog(this, "Alterado com sucesso!!");
-            loadProductTable();
-            limparCampos();
-            desabilitarCampos();
-            desabilitarBotao();
+            boolean resultado = controllerProduct.controlUpdateProduct(product);
+            if (resultado == true) {
+                JOptionPane.showMessageDialog(this, "Alterado com sucesso!!");
+                loadProductTable();
+                limparCampos();
+                desabilitarCampos();
+                desabilitarBotao();
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao Salvar!!");
+            }
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao Salvar: "
+                    + "Informe apenas números no campo 'Quantidade'");
         }
+
     }
 
     public void excluirProduct() {
@@ -185,9 +200,7 @@ public class CardProducts extends javax.swing.JPanel {
     private void initComponents() {
 
         btnRemover = new javax.swing.JButton();
-        size = new javax.swing.JTextField();
         btnCancelar = new javax.swing.JButton();
-        price = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         bar_code = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -209,6 +222,8 @@ public class CardProducts extends javax.swing.JPanel {
         type = new javax.swing.JTextField();
         btnAlterar = new javax.swing.JButton();
         brand = new javax.swing.JTextField();
+        price = new javax.swing.JTextField();
+        size = new javax.swing.JTextField();
 
         btnRemover.setText("Remover");
         btnRemover.addActionListener(new java.awt.event.ActionListener() {
@@ -368,20 +383,21 @@ public class CardProducts extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(tamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(size)
-                            .addComponent(category_name, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(category_name, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(size)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(0, 0, 0)
                                 .addComponent(qtdproduct, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(price)))))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -406,15 +422,18 @@ public class CardProducts extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(brand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(size, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(price, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(brand, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(type, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tamanho, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(size, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(1, 1, 1)))
                 .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
@@ -428,7 +447,7 @@ public class CardProducts extends javax.swing.JPanel {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
