@@ -16,17 +16,25 @@ import java.util.ArrayList;
  */
 public class ControllerFuncionario {
 
-    FuncionarioDao employeesDao = new FuncionarioDao();
+    FuncionarioDao funcionariosDao = new FuncionarioDao();
 
+    //salvar funcionarios
     public boolean controlSaveemployees(Funcionarios employees, User user) {
-        return this.employeesDao.daoFuncionarios(employees, user);
+        return this.funcionariosDao.daoFuncionarios(employees, user);
     }
-    
-     public boolean controlUpdateemployees(Funcionarios employees, User user) {
-        return this.employeesDao.daoUpdateemployees(employees, user);
+
+    //update funcionarios
+    public boolean controlUpdateemployees(Funcionarios employees, User user) {
+        return this.funcionariosDao.daoUpdateemployees(employees, user);
     }
-     
+
+    //listar funcionarios
     public ArrayList<User> returnListEmployeesController() {
-        return this.employeesDao.daoListemployees();
+        return this.funcionariosDao.daoListemployees();
+    }
+
+    //delete funcionarios
+    public boolean controlDeleteFuncionarios(int codigo) {
+        return this.funcionariosDao.daoDeleteFuncionario(codigo);
     }
 }

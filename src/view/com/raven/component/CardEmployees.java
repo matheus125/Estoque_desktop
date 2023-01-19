@@ -134,6 +134,26 @@ public class CardEmployees extends javax.swing.JPanel {
 
     }
 
+    public void excluirFuncionarios() {
+        desabilitarCampos();
+        int linha = TableUserEmployees.getSelectedRow();
+        String tNome = (String) TableUserEmployees.getValueAt(linha, 4);
+        int codigo = (int) TableUserEmployees.getValueAt(linha, 0);
+        int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir esse funcionario: \n"
+                + tNome + "?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if (opcao == JOptionPane.OK_OPTION) {
+            boolean resultado = controllerFuncionarios.controlDeleteFuncionarios(codigo);
+            if (resultado == true) {
+                JOptionPane.showMessageDialog(this, "Funcionário Excluido com sucesso!");
+                loademployeesTable();
+                limparCampos();
+                desabilitarCampos();
+                desabilitarBotao();
+                btnNovo.setEnabled(true);
+            }
+        }
+    }
+
     public void setData(Model_Card data) {
 
         /*lbTitle.setText(data.getTitle());
@@ -404,7 +424,7 @@ public class CardEmployees extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        // TODO add your handling code here:
+        excluirFuncionarios();
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     @Override
