@@ -1,15 +1,15 @@
 package com.estoque.model;
 
-public class Employees {
+public class Funcionarios {
     
     private int id;
     private String employees_name;
     private String employees_function;
 
-    public Employees() {
+    public Funcionarios() {
     }
 
-    public Employees(int id, String employees_name, String employees_function) {
+    public Funcionarios(int id, String employees_name, String employees_function) {
         this.id = id;
         this.employees_name = employees_name;
         this.employees_function = employees_function;

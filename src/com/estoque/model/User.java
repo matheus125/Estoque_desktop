@@ -2,7 +2,7 @@ package com.estoque.model;
 
 public class User {
     private int id;
-    private Employees employees;
+    private Funcionarios employees;
     private String login;
     private String password;
     private String profile;
@@ -10,7 +10,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, Employees employees, String login, String password, String profile) {
+    public User(int id, Funcionarios employees, String login, String password, String profile) {
         this.id = id;
         this.employees = employees;
         this.login = login;
@@ -37,14 +37,14 @@ public class User {
     /**
      * @return the employees
      */
-    public Employees getEmployees() {
+    public Funcionarios getEmployees() {
         return employees;
     }
 
     /**
      * @param employees the employees to set
      */
-    public void setEmployees(Employees employees) {
+    public void setEmployees(Funcionarios employees) {
         this.employees = employees;
     }
 

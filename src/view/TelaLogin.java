@@ -338,7 +338,7 @@ public class TelaLogin extends javax.swing.JFrame {
     private void btnAcessarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcessarActionPerformed
 
         try {
-            con.executarSql("select login, password from tb_user where login='" + txtLogin.getText() + "'");
+            con.executarSql("select login, senha from tb_user where login='" + txtLogin.getText() + "'");
             con.getResultSet().first();
             if (txtLogin.getText().isEmpty()) {
                 erroSenha();
@@ -348,7 +348,7 @@ public class TelaLogin extends javax.swing.JFrame {
                 erroSenha();
                 JOptionPane.showMessageDialog(null, "Preencha o Campo Senha:!");
                 txtsenha.requestFocus();
-            } else if (con.getResultSet().getString("password").equals(CriptografarSenha.encriptografar(txtsenha.getText()))) {
+            } else if (con.getResultSet().getString("senha").equals(CriptografarSenha.encriptografar(txtsenha.getText()))) {
                 salvarUserLogs();
                 Main telamenu = new Main();
                 telamenu.usuário = con.getResultSet().getString("login");

@@ -42,7 +42,7 @@ public class ProductDao extends ConexaoBD {
 
         try {
             this.getConectar();
-            this.executarSql("SELECT * FROM tb_product");
+            this.executarSql("SELECT * FROM tb_produto");
             while (this.getResultSet().next()) {
 
                 product = new Product();

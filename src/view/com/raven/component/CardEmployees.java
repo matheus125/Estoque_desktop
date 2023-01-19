@@ -3,7 +3,7 @@ package view.com.raven.component;
 import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerFuncionario;
 import com.estoque.dao.CriptografarSenha;
-import com.estoque.model.Employees;
+import com.estoque.model.Funcionarios;
 import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
@@ -23,7 +23,7 @@ public class CardEmployees extends javax.swing.JPanel {
     ConexaoBD con = new ConexaoBD();
 
     ControllerFuncionario controllerFuncionarios = new ControllerFuncionario();
-    Employees employees = new Employees();
+    Funcionarios employees = new Funcionarios();
     User user = new User();
     ArrayList<User> listEmployees = new ArrayList<>();
 
@@ -217,6 +217,11 @@ public class CardEmployees extends javax.swing.JPanel {
         });
 
         btnRemover.setText("Apagar");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -370,16 +375,16 @@ public class CardEmployees extends javax.swing.JPanel {
         btnAlterar.setEnabled(true);
         String nome = "" + TableUserEmployees.getValueAt(TableUserEmployees.getSelectedRow(), 1);
         con.getConectar();
-        con.executarSql("select e.id,e.employees_name, e.employees_function, u.login, u.password, u.access_level\n"
-                + "		from tb_employees e inner join tb_user u on e.id = u.id_employees where employees_name ='" + nome + "'");
+        con.executarSql("select e.id,e.nome, e.funcao, u.login, u.senha, u.perfil\n"
+                + "		from tb_funcionario e inner join tb_user u on e.id = u.id_funcionario where nome ='" + nome + "'");
         try {
             con.getResultSet().first();
             id = Integer.parseInt(con.getResultSet().getString("id"));
-            txtnome.setText(con.getResultSet().getString("employees_name"));
-            comboFunção.setSelectedItem(con.getResultSet().getString("employees_function"));
+            txtnome.setText(con.getResultSet().getString("nome"));
+            comboFunção.setSelectedItem(con.getResultSet().getString("funcao"));
             txtlogin.setText(con.getResultSet().getString("login"));
-            txtsenha.setText(con.getResultSet().getString("password"));
-            ComboPerfil.setSelectedItem(con.getResultSet().getString("access_level"));
+            txtsenha.setText(con.getResultSet().getString("senha"));
+            ComboPerfil.setSelectedItem(con.getResultSet().getString("perfil"));
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro no ao selecionar os dados" + ex);
         }
@@ -397,6 +402,10 @@ public class CardEmployees extends javax.swing.JPanel {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     @Override
     protected void paintComponent(Graphics grphcs) {

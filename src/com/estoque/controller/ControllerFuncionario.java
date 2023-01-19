@@ -5,8 +5,8 @@
  */
 package com.estoque.controller;
 
-import com.estoque.dao.EmployeesDao;
-import com.estoque.model.Employees;
+import com.estoque.dao.FuncionarioDao;
+import com.estoque.model.Funcionarios;
 import com.estoque.model.User;
 import java.util.ArrayList;
 
@@ -16,13 +16,13 @@ import java.util.ArrayList;
  */
 public class ControllerFuncionario {
 
-    EmployeesDao employeesDao = new EmployeesDao();
+    FuncionarioDao employeesDao = new FuncionarioDao();
 
-    public boolean controlSaveemployees(Employees employees, User user) {
-        return this.employeesDao.daoSaveemployees(employees, user);
+    public boolean controlSaveemployees(Funcionarios employees, User user) {
+        return this.employeesDao.daoFuncionarios(employees, user);
     }
     
-     public boolean controlUpdateemployees(Employees employees, User user) {
+     public boolean controlUpdateemployees(Funcionarios employees, User user) {
         return this.employeesDao.daoUpdateemployees(employees, user);
     }
      

@@ -94,7 +94,7 @@ public class Main extends javax.swing.JFrame {
             Form_Product FormularioProdutos = new Form_Product();
             con.executarSql("select*from tb_user where login='" + lbusuarios.getText() + "'");
             con.getResultSet().first();
-            if (con.getResultSet().getString("access_level").equals("Administrador")) {
+            if (con.getResultSet().getString("perfil").equals("Administrador")) {
                 if (FormularioProdutos == FormularioProdutos) {
                     setForm(FormularioProdutos);
                     FormularioProdutos.setVisible(true);
@@ -117,7 +117,7 @@ public class Main extends javax.swing.JFrame {
             con.getResultSet().last();
             codUser = con.getResultSet().getInt("id");
 
-            PreparedStatement pst = con.con.prepareStatement("UPDATE tb_userslogs SET exit_registration_date_update = CURRENT_TIMESTAMP WHERE id=?");
+            PreparedStatement pst = con.con.prepareStatement("UPDATE tb_userslogs SET registration_date_update = CURRENT_TIMESTAMP WHERE id=?");
 
             pst.setInt(1, codUser);
             pst.execute();

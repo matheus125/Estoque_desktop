@@ -1,16 +1,16 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Employees;
+import com.estoque.model.Funcionarios;
 import com.estoque.model.User;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class EmployeesDao extends ConexaoBD {
+public class FuncionarioDao extends ConexaoBD {
 
-    public boolean daoSaveemployees(Employees employees, User user) {
+    public boolean daoFuncionarios(Funcionarios employees, User user) {
 
-        String SalveEmployees = "call sp_save_employees ("
+        String SalveEmployees = "call sp_salvar_funcionarios ("
                 + "'" + employees.getEmployees_name()+ "',"
                 + "'" + employees.getEmployees_function()+ "',"
                 + "'" + user.getLogin()+ "',"
@@ -38,13 +38,13 @@ public class EmployeesDao extends ConexaoBD {
      public ArrayList<User> daoListemployees(){
         ArrayList<User> listEmployees = new ArrayList<>();
         User user = new User();
-        Employees employees = new Employees();
+        Funcionarios employees = new Funcionarios();
         try {
             this.getConectar();
-            this.executarSql("call sp_list_employees");
+            this.executarSql("call sp_listar_funcionarios");
             while(this.getResultSet().next()){
                 user = new User();
-                employees = new Employees();
+                employees = new Funcionarios();
                         
                 employees.setId(this.getResultSet().getInt(1));
                 employees.setEmployees_name(this.getResultSet().getString(2));
@@ -65,9 +65,9 @@ public class EmployeesDao extends ConexaoBD {
         return listEmployees;
     }
      
-     public boolean daoUpdateemployees(Employees employees, User user) {
+     public boolean daoUpdateemployees(Funcionarios employees, User user) {
 
-        String UpdateEmployees = "call sp_update_employees ("
+        String UpdateEmployees = "call sp_update_funcionarios ("
                 + "'" + employees.getId()+ "',"
                 + "'" + employees.getEmployees_name()+ "',"
                 + "'" + employees.getEmployees_function()+ "',"
