@@ -7,7 +7,7 @@ package view.com.raven.component;
 
 import com.estoque.banco.ConexaoBD;
 import com.estoque.dao.SalesDao;
-import com.estoque.model.Sales;
+import com.estoque.model.Vendas;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -178,12 +178,12 @@ public class CardHostoricoVendas extends javax.swing.JPanel {
         LocalDate data_fim = LocalDate.parse(txtDataFinal.getText(), formato);
         
         SalesDao salesDao = new SalesDao();
-        List<Sales> lista = salesDao.listarSalesForPeriod(data_inicio, data_fim);
+        List<Vendas> lista = salesDao.listarSalesForPeriod(data_inicio, data_fim);
         
         DefaultTableModel defaultTableModel = (DefaultTableModel)TableHistorico.getModel();
         defaultTableModel.setNumRows(0);
         
-        for (Sales sales:lista) {
+        for (Vendas sales:lista) {
             defaultTableModel.addRow(new Object[]{
                 sales.getId(),
                 sales.getSale_date(),

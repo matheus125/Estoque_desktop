@@ -232,7 +232,7 @@ public class Main extends javax.swing.JFrame {
         System.exit(0);
         con.getfecharConexao();
     }//GEN-LAST:event_btn_sairActionPerformed
-
+    
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         lbusuarios.setText(usuário);
     }//GEN-LAST:event_formWindowActivated

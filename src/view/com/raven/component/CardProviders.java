@@ -3,8 +3,8 @@ package view.com.raven.component;
 import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerProduct;
 import com.estoque.controller.ControllerProviders;
-import com.estoque.model.Product;
-import com.estoque.model.Providers;
+import com.estoque.model.Produto;
+import com.estoque.model.Fornecedores;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -24,7 +24,7 @@ public class CardProviders extends javax.swing.JPanel {
 
     ControllerProviders controllerProviders = new ControllerProviders();
 
-    Providers providers = new Providers();
+    Fornecedores providers = new Fornecedores();
 
     //  ArrayList<Product> listProduct = new ArrayList<>();
     public Color getColor1() {

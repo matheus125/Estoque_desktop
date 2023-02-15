@@ -1,23 +1,23 @@
 package com.estoque.controller;
 
 import com.estoque.dao.ProductDao;
-import com.estoque.model.Product;
+import com.estoque.model.Produto;
 import java.util.ArrayList;
-import com.estoque.model.Providers;
+import com.estoque.model.Fornecedores;
 
 public class ControllerProduct {
 
     ProductDao productDao = new ProductDao();
 
-    public boolean controlSaveProduct(Product product) {
+    public boolean controlSaveProduct(Produto product) {
         return this.productDao.daoSalveProduct(product);
     }
 
-    public boolean controlUpdateProduct(Product product) {
+    public boolean controlUpdateProduct(Produto product) {
         return this.productDao.daoUpdateProduct(product);
     }
 
-    public ArrayList<Product> returnListProductController() {
+    public ArrayList<Produto> returnListProductController() {
         return this.productDao.daoListProduct();
     }
     //delete cliente
@@ -25,7 +25,7 @@ public class ControllerProduct {
         return this.productDao.daoDeleteCliente(codigo);
     }
     
-    public Product controlBuscarProdutoPorID(String Codigo) {
+    public Produto controlBuscarProdutoPorID(String Codigo) {
         return this.productDao.buscarCodigoBarra(Codigo);
     }
 

@@ -6,7 +6,7 @@
 package com.estoque.controller;
 
 import com.estoque.dao.ProvidersDao;
-import com.estoque.model.Providers;
+import com.estoque.model.Fornecedores;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +17,7 @@ public class ControllerProviders {
 
     ProvidersDao providersDao = new ProvidersDao();
 
-    public boolean controlSaveProviders(Providers providers) {
+    public boolean controlSaveProviders(Fornecedores providers) {
         return this.providersDao.daoSalveProviders(providers);
     }
 
@@ -25,7 +25,7 @@ public class ControllerProviders {
    
 
     //selecionar cliente
-    public Providers controlRecuperarCliente(String name) {
+    public Fornecedores controlRecuperarCliente(String name) {
         return this.providersDao.querybyName(name);
     }
 

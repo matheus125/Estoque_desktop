@@ -1,8 +1,8 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Product;
-import com.estoque.model.Providers;
+import com.estoque.model.Produto;
+import com.estoque.model.Fornecedores;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 public class ProductDao extends ConexaoBD {
 
-    public boolean daoSalveProduct(Product product) {
+    public boolean daoSalveProduct(Produto product) {
 
         String SaveProduct = "call sp_save_product ("
                 + "'" + product.getType() + "',"
@@ -35,17 +35,17 @@ public class ProductDao extends ConexaoBD {
         }
     }
 
-    public ArrayList<Product> daoListProduct() {
-        ArrayList<Product> listProducts = new ArrayList<>();
+    public ArrayList<Produto> daoListProduct() {
+        ArrayList<Produto> listProducts = new ArrayList<>();
 
-        Product product = new Product();
+        Produto product = new Produto();
 
         try {
             this.getConectar();
             this.executarSql("SELECT * FROM tb_produto");
             while (this.getResultSet().next()) {
 
-                product = new Product();
+                product = new Produto();
                 product.setId(this.getResultSet().getInt(1));
                 product.setCategory(this.getResultSet().getString(2));
                 product.setType(this.getResultSet().getString(3));
@@ -65,7 +65,7 @@ public class ProductDao extends ConexaoBD {
         return listProducts;
     }
 
-    public boolean daoUpdateProduct(Product product) {
+    public boolean daoUpdateProduct(Produto product) {
 
         String UpdateProduct = "call sp_update_product ("
                 + "'" + product.getId() + "',"
@@ -90,7 +90,7 @@ public class ProductDao extends ConexaoBD {
         }
     }
 
-    public Product buscarCodigoBarra(String Codigo) {
+    public Produto buscarCodigoBarra(String Codigo) {
         this.getConectar();
         try {
             String sql = "select id, type, category_name, brand, size, description, bar_code, price, qtdproduct\n"
@@ -99,7 +99,7 @@ public class ProductDao extends ConexaoBD {
             stmt.setString(1, Codigo);
 
             ResultSet rs = stmt.executeQuery();
-            Product product = new Product();
+            Produto product = new Produto();
 
             if (rs.next()) {
                 product.setId(rs.getInt("id"));

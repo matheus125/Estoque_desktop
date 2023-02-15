@@ -4,10 +4,10 @@ import com.estoque.banco.ConexaoBD;
 import com.estoque.dao.ProductDao;
 import com.estoque.dao.SalesDao;
 import com.estoque.dao.Sales_ItemsDao;
-import com.estoque.model.Client;
-import com.estoque.model.Product;
-import com.estoque.model.Sales;
-import com.estoque.model.Sales_items;
+import com.estoque.model.Cliente;
+import com.estoque.model.Produto;
+import com.estoque.model.Vendas;
+import com.estoque.model.Itens_vendas;
 import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
@@ -25,8 +25,8 @@ public class CardPagamentos extends javax.swing.JPanel {
 
     ConexaoBD con = new ConexaoBD();
     User user = new User();
-    Client client_id = new Client();
-    Sales sales = new Sales();
+    Cliente client_id = new Cliente();
+    Vendas sales = new Vendas();
     SalesDao salesDao = new SalesDao();
     DefaultTableModel carrinho;
 
@@ -230,10 +230,10 @@ public class CardPagamentos extends javax.swing.JPanel {
         for (int i = 0; i < carrinho.getRowCount(); i++) {
 
             int qtd_estoque, qtd_comprada, qtd_atualizada;
-            Product product = new Product();
+            Produto product = new Produto();
             ProductDao productDao = new ProductDao();
 
-            Sales_items sales_items = new Sales_items();
+            Itens_vendas sales_items = new Itens_vendas();
 
             sales_items.setSales(sales);
             product.setId(Integer.parseInt(carrinho.getValueAt(i, 0).toString()));

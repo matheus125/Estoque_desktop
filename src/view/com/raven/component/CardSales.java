@@ -4,8 +4,8 @@ import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerClient;
 import com.estoque.controller.ControllerProduct;
 import com.estoque.dao.UserDao;
-import com.estoque.model.Client;
-import com.estoque.model.Product;
+import com.estoque.model.Cliente;
+import com.estoque.model.Produto;
 import com.estoque.model.User;
 import view.com.raven.model.Model_Card;
 import java.awt.Color;
@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
-import view.FormaPagamento;
+import view.com.login.FormaPagamento;
 
 public class CardSales extends javax.swing.JPanel {
     
@@ -28,8 +28,8 @@ public class CardSales extends javax.swing.JPanel {
 
     User user = new User();
 
-    Client client = new Client();
-    Product product = new Product();
+    Cliente client = new Cliente();
+    Produto product = new Produto();
 
     ConexaoBD con = new ConexaoBD();
 

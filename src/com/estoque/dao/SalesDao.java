@@ -1,8 +1,8 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Client;
-import com.estoque.model.Sales;
+import com.estoque.model.Cliente;
+import com.estoque.model.Vendas;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,9 +13,9 @@ import javax.swing.JOptionPane;
 
 public class SalesDao extends ConexaoBD {
 
-    Sales sales = new Sales();
+    Vendas sales = new Vendas();
 
-    public void cadastrarVenda(Sales sales) {
+    public void cadastrarVenda(Vendas sales) {
         this.getConectar();
         try {
             String sql = "insert into tb_sales (id_client, id_user, sale_date, value_total, type_payment) values (?,?,?,?,?)";
@@ -56,11 +56,11 @@ public class SalesDao extends ConexaoBD {
         }
     }
 
-    public List<Sales> listarSalesForPeriod(LocalDate data_inicio, LocalDate data_fim) {
+    public List<Vendas> listarSalesForPeriod(LocalDate data_inicio, LocalDate data_fim) {
         this.getConectar();
         try {
 
-            List<Sales> lista = new ArrayList<>();
+            List<Vendas> lista = new ArrayList<>();
             String sql = "select v.id, v.sale_date, c.name, v.value_total, v.type_payment\n"
                     + " from tb_sales as v inner join tb_client as c on (v.id_client = c.id) \n"
                     + " where v.sale_date between ? and ?";
@@ -71,8 +71,8 @@ public class SalesDao extends ConexaoBD {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Sales sales = new Sales();
-                Client client = new Client();
+                Vendas sales = new Vendas();
+                Cliente client = new Cliente();
                 
                 sales.setId(rs.getInt("v.id"));
                 sales.setSale_date(rs.getString("v.sale_date"));

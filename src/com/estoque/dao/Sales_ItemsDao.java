@@ -1,14 +1,14 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Sales_items;
+import com.estoque.model.Itens_vendas;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class Sales_ItemsDao extends ConexaoBD {
 
-    public void cadastrarItem(Sales_items sales_items) {
+    public void cadastrarItem(Itens_vendas sales_items) {
 
         this.getConectar();
         try {

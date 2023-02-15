@@ -96,6 +96,7 @@ public class CardEmployees extends javax.swing.JPanel {
     }
 
     public void saveEmployees() {
+        
         employees.setEmployees_name(this.txtnome.getText());
         employees.setEmployees_function((String) this.comboFunção.getSelectedItem());
 
@@ -137,7 +138,7 @@ public class CardEmployees extends javax.swing.JPanel {
     public void excluirFuncionarios() {
         desabilitarCampos();
         int linha = TableUserEmployees.getSelectedRow();
-        String tNome = (String) TableUserEmployees.getValueAt(linha, 4);
+        String tNome = (String) TableUserEmployees.getValueAt(linha, 3);
         int codigo = (int) TableUserEmployees.getValueAt(linha, 0);
         int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir esse funcionario: \n"
                 + tNome + "?", "Atenção", JOptionPane.YES_NO_OPTION);
@@ -301,7 +302,7 @@ public class CardEmployees extends javax.swing.JPanel {
                         .addComponent(btnAlterar)
                         .addGap(5, 5, 5)
                         .addComponent(btnRemover)
-                        .addGap(13, 13, 13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(160, 160, 160)
@@ -357,8 +358,9 @@ public class CardEmployees extends javax.swing.JPanel {
                     .addComponent(btnNovo)
                     .addComponent(btnSalvar)
                     .addComponent(btnAlterar)
-                    .addComponent(btnRemover)
-                    .addComponent(btnCancelar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnRemover)
+                        .addComponent(btnCancelar)))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)

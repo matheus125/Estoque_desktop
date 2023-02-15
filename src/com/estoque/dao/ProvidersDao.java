@@ -1,7 +1,7 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Providers;
+import com.estoque.model.Fornecedores;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ProvidersDao extends ConexaoBD {
 
-    public boolean daoSalveProviders(Providers providers) {
+    public boolean daoSalveProviders(Fornecedores providers) {
 
         String SaveProduct = "call sp_save_providers ("
                 + "'" + providers.getCnpj() + "',"
@@ -30,14 +30,14 @@ public class ProvidersDao extends ConexaoBD {
         }
     }
 
-    public ArrayList<Providers> daoListProviders() {
-        ArrayList<Providers> listProviders = new ArrayList<>();
+    public ArrayList<Fornecedores> daoListProviders() {
+        ArrayList<Fornecedores> listProviders = new ArrayList<>();
         String comandoSql = "select id, name, cnpj, email, phone from tb_providers";
         try {
             this.getConectar();
             this.executarSql(comandoSql);
             while (this.getResultSet().next()) {
-                Providers providers = new Providers();
+                Fornecedores providers = new Fornecedores();
                 providers.setId(this.getResultSet().getInt(1));
                 providers.setCnpj(this.getResultSet().getString(2));
                 providers.setName(this.getResultSet().getString(3));
@@ -55,9 +55,9 @@ public class ProvidersDao extends ConexaoBD {
         return listProviders;
     }
 
-    public Providers querybyName(String nome) {
+    public Fornecedores querybyName(String nome) {
         String comandoRecuperar = "call sp_list_providers(" + nome + ")";
-        Providers providers = new Providers();
+        Fornecedores providers = new Fornecedores();
         try {
             this.getConectar();
             this.executarSql(comandoRecuperar);

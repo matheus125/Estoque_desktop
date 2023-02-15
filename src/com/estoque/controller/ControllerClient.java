@@ -1,38 +1,39 @@
 package com.estoque.controller;
 
-import com.estoque.model.Client;
+import com.estoque.model.Cliente;
 import com.estoque.dao.ClientDao;
+import com.estoque.model.Fone;
 import java.util.ArrayList;
 
 public class ControllerClient {
 
     ClientDao clientDao = new ClientDao();
 
-    public boolean controllerSaveClient(Client client) {
-        return this.clientDao.daoSalvarClient(client);
+    public boolean controllerSaveClient(Cliente client, Fone fone) {
+        return this.clientDao.daoSalvarClient(client, fone);
     }
 
-    public boolean controllerUpdateClient(Client client) {
-        return this.clientDao.daoUpdateClient(client);
+    public boolean controllerUpdateClient(Cliente client, Fone fone) {
+        return this.clientDao.daoUpdateClient(client, fone);
     }
 
     public boolean controllerDeletClient(int codigo) {
         return this.clientDao.daoDeleteClient(codigo);
     }
 
-    public Client controllerRecuperarClient(int codigo) {
+    public Cliente controllerRecuperarClient(int codigo) {
         return this.clientDao.daoGetRecuperarCliente(codigo);
     }
 
-    public ArrayList<Client> controlGetListarClientes() {
+    public ArrayList<Cliente> controlGetListarClientes() {
         return this.clientDao.daoGetListarClientes();
     }
 
-    public Client controlRecuperarCliente(String cliente) {
+    public Cliente controlRecuperarCliente(String cliente) {
         return this.clientDao.daoGetRecuperarCliente(cliente);
     }
 
-    public Client controlBuscarCpf(String cpf) {
+    public Cliente controlBuscarCpf(String cpf) {
         return this.clientDao.buscarCpf(cpf);
     }
     

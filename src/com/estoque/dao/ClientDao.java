@@ -1,7 +1,8 @@
 package com.estoque.dao;
 
 import com.estoque.banco.ConexaoBD;
-import com.estoque.model.Client;
+import com.estoque.model.Cliente;
+import com.estoque.model.Fone;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
@@ -12,11 +13,11 @@ import javax.swing.JOptionPane;
 public class ClientDao extends ConexaoBD {
 
     //select * from tb_client where cpf = 03293043216;
-    public boolean daoSalvarClient(Client client) {
+    public boolean daoSalvarClient(Cliente client, Fone fone) {
         String comando = "CALL sp_save_client("
                 + "'" + client.getName() + "',"
                 + "'" + client.getCpf() + "',"
-                + "'" + client.getPhone() + "'"
+                + "'" + fone.getFone() + "'"
                 + ")";
         try {
             this.getConectar();
@@ -28,11 +29,11 @@ public class ClientDao extends ConexaoBD {
         }
     }
 
-    public boolean daoUpdateClient(Client client) {
+    public boolean daoUpdateClient(Cliente client, Fone fone) {
         String comandoUpdate = "CALL sp_update_client("
                 + "'" + client.getName() + "',"
                 + "'" + client.getCpf() + "',"
-                + "'" + client.getPhone() + "'"
+                + "'" + fone.getFone() + "'"
                 + ")";
         try {
             this.getConectar();
@@ -58,9 +59,10 @@ public class ClientDao extends ConexaoBD {
         }
     }
 
-    public Client daoGetRecuperarCliente(int codigo) {
+    public Cliente daoGetRecuperarCliente(int codigo) {
         String comandoRecuperar = "call sp_recover_client_id(" + codigo + ");";
-        Client client = new Client();
+        Cliente client = new Cliente();
+        Fone fone = new Fone();
         try {
             this.getConectar();
             this.executarSql(comandoRecuperar);
@@ -68,7 +70,7 @@ public class ClientDao extends ConexaoBD {
                 client.setId(this.getResultSet().getInt(1));
                 client.setName(this.getResultSet().getString(2));
                 client.setCpf(this.getResultSet().getString(3));
-                client.setPhone(this.getResultSet().getString(4));
+                fone.setFone(this.getResultSet().getString(4));
             }
         } catch (SQLException erro) {
             System.out.println("Erro: " + erro.getMessage());
@@ -78,18 +80,19 @@ public class ClientDao extends ConexaoBD {
         return client;
     }
 
-    public ArrayList<Client> daoGetListarClientes() {
-        ArrayList<Client> listarClientes = new ArrayList<>();
+    public ArrayList<Cliente> daoGetListarClientes() {
+        ArrayList<Cliente> listarClientes = new ArrayList<>();
         String comandoSql = "select id, name, cpf, phone from tb_client";
         try {
             this.getConectar();
             this.executarSql(comandoSql);
             while (this.getResultSet().next()) {
-                Client client = new Client();
+                Cliente client = new Cliente();
+                Fone fone = new Fone();
                 client.setId(this.getResultSet().getInt(1));
                 client.setName(this.getResultSet().getString(2));
                 client.setCpf(this.getResultSet().getString(3));
-                client.setPhone(this.getResultSet().getString(4));
+                fone.setFone(this.getResultSet().getString(4));
                 listarClientes.add(client);
             }
         } catch (SQLDataException erro) {
@@ -106,9 +109,10 @@ public class ClientDao extends ConexaoBD {
         return listarClientes;
     }
 
-    public Client daoGetRecuperarCliente(String cliente) {
+    public Cliente daoGetRecuperarCliente(String cliente) {
         String comandoRecuperar = "call sp_recover_client_name(" + cliente + ")";
-        Client client = new Client();
+        Cliente client = new Cliente();
+        Fone fone = new Fone();
         try {
             this.getConectar();
             this.executarSql(comandoRecuperar);
@@ -116,7 +120,7 @@ public class ClientDao extends ConexaoBD {
                 client.setId(this.getResultSet().getInt(1));
                 client.setName(this.getResultSet().getString(2));
                 client.setCpf(this.getResultSet().getString(3));
-                client.setPhone(this.getResultSet().getString(4));
+                fone.setFone(this.getResultSet().getString(4));
             }
         } catch (SQLException erro) {
             System.out.println("Erro: " + erro.getMessage());
@@ -126,9 +130,9 @@ public class ClientDao extends ConexaoBD {
         return client;
     }
 
-    /*  public Client daoGetRecuperarCPf(String cpf) {
+    /*  public Cliente daoGetRecuperarCPf(String cpf) {
         String comandoRecuperar = "call sp_recover_client_cpf(" + cpf + ")";
-        Client client = new Client();
+        Cliente client = new Cliente();
         try {
             this.getConectar();
             this.executarSql(comandoRecuperar);
@@ -145,21 +149,22 @@ public class ClientDao extends ConexaoBD {
         }
         return client;
     }*/
-    public Client buscarCpf(String cpf) {
+    public Cliente buscarCpf(String cpf) {
         this.getConectar();
         try {
-            String sql = "select * from tb_client where cpf = ?";
+            String sql = "select * from tb_cliente inner join tb_fone where cpf = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, cpf);
 
-            ResultSet rs = stmt.executeQuery();
-            Client client = new Client();
+            ResultSet result = stmt.executeQuery();
+            Cliente client = new Cliente();
+            Fone fone = new Fone();
 
-            if (rs.next()) {
-                client.setId(rs.getInt("id"));
-                client.setName(rs.getString("name"));
-                client.setCpf(rs.getString("cpf"));
-                client.setPhone(rs.getString("phone"));
+            if (result.next()) {
+                client.setId(result.getInt("id"));
+                client.setName(result.getString("nome"));
+                client.setCpf(result.getString("cpf"));
+                fone.setFone(result.getString("fone"));
             }
 
             return client;

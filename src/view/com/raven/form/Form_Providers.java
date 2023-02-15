@@ -3,7 +3,7 @@ package view.com.raven.form;
 import com.estoque.banco.ConexaoBD;
 import com.estoque.controller.ControllerProduct;
 
-import com.estoque.model.Product;
+import com.estoque.model.Produto;
 import com.estoque.tabelas.ProductsTable;
 
 import java.sql.SQLException;
